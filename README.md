@@ -12,6 +12,7 @@ Webpack plugin that compiles web-extension `manifest.json` files and adds smart 
 
 * Autoreload extensions via websockets
 * Use vendor prefixes in manifest properties
+* Validates some `manifest.json` fields
 
 ## Install
 
@@ -22,29 +23,77 @@ $ npm i webpack-webextension-plugin
 ## Usage
 
 ```js
-const WebextensionPlugins = require('webpack-webextension-plugin')
+const WebextensionPlugin = require('webpack-webextension-plugin')
 
-...
-plugins: [
-  new WebextensionPlugins({
-    vendor: 'chrome'
-  })
-]
-...
+const config = {
+  plugins: [
+    new WebextensionPlugin({
+      vendor: 'chrome'
+    })
+  ]
+}
 ```
 
-## Supported Browser (vendor)
+### API
 
-* `chrome`
-* `opera`
-* `firefox`
-* `edge`
+#### new WebextensionPlugin([options])
+
+Add result to webpack plugins to initialize.
+
+##### options
+
+Type: `Object`
+
+Any of the options below.
+
+###### vendor
+
+Type: `String`  
+Default: `chrome`  
+Any of: `chrome`, `opera`, `firefox`, `edge`
+
+Used for vendor prefixing in the `manifest.json`. More infos regarding this can be found below.
+
+###### port
+
+Type: `Integer`  
+Default: `35729`
+
+Specify the listening port for the webstocket development server.
+
+###### autoreload
+
+Type: `Boolean`  
+Default: true
+
+Enables auto reload. If not specified will be enabled when using webpacks watch mode.
+
+###### quiet
+
+Type: `Boolean`  
+Default: false
+
+Disable plugin logging.
+
+###### reconnectTime
+
+Type: `Integer`  
+Default: `3000`
+
+Specify the reconnect time to the development server from the extension side.
+
+###### manifestDefaults
+
+Type: `Object`  
+Default: `{}`
+
+Allows you to define defaults for the `manifest.json` file.
 
 ## FAQ
 
 ### How does smart autoreload work?
 
-In watch mode, we create/extends a background page in the extension with a websockets client, that connects to our custom websocket server.
+We create/extend a background page in the extension with a websockets client, that connects to our custom websocket server.
 As soon as a specific files changes the client checks how to reload the extension:
 
 * if `manifest.json` change → full reload
@@ -61,8 +110,9 @@ Vendor prefixed manifest keys allow you to write one `manifest.json` for multibl
 ```js
 {
   "__chrome__name": "SuperChrome",
-  "__chrome__name": "SuperFox",
-  "__chrome__name": "SuperEdge"
+  "__firefox__name": "SuperFox",
+  "__edge__name": "SuperEdge",
+  "__opera__name": "SuperOpera"
 }
 ```
 
