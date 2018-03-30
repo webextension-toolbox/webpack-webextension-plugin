@@ -1,6 +1,6 @@
 {
   "name": "webpack-webextension-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Webpack plugin that compiles web-extension manifest.json files and adds smart auto reload",
   "main": "index.js",
   "repository": "git@github.com:HaNdTriX/webpack-webextension-plugin.git",
