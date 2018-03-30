@@ -105,8 +105,6 @@ As soon as a specific files changes the client checks how to reload the extensio
 
 Vendor prefixed manifest keys allow you to write one `manifest.json` for multible vendors. 
 
-`manifest.json`:
-
 ```js
 {
   "__chrome__name": "SuperChrome",
@@ -118,8 +116,6 @@ Vendor prefixed manifest keys allow you to write one `manifest.json` for multibl
 
 if the vendor is `chrome` this compiles to:
 
-`manifest.json`:
-
 ```js
 {
   "name": "SuperChrome",
@@ -130,6 +126,11 @@ if the vendor is `chrome` this compiles to:
 
 * `webpack-webextension-plugin` should work for every browser in the same way.
 * `web-ext` only works for firefox. Nevertheless if your primary browser is firefox, you should definetly check it out.
+
+## Links
+
+* [generator-web-extension](https://github.com/HaNdTriX/generator-web-extension)
+* [webextension-toolbox](https://github.com/handtrix/webextension-toolbox)
 
 ## License
 
