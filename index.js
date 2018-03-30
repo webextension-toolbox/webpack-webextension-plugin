@@ -69,6 +69,11 @@ class WebextensionPlugin {
     ])
   }
 
+  /**
+   * Webpack afteCompile hook
+   *
+   * @param {Object} compilation
+   */
   afterCompile (compilation) {
     return this.watchManifest(compilation)
   }
@@ -127,6 +132,12 @@ class WebextensionPlugin {
     }
   }
 
+  /**
+   * Add the client script to assets
+   * when autoreload enabled and is watching
+   *
+   * @param {Object} compilation
+   */
   async addClient (compilation) {
     if (this.autoreload && this.isWatching) {
       await this.compileClient(compilation)
@@ -247,6 +258,7 @@ class WebextensionPlugin {
   }
 }
 
+// Expose the vendors
 WebextensionPlugin.vendors = vendors
 
 module.exports = WebextensionPlugin
