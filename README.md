@@ -75,13 +75,6 @@ Default: false
 
 Disable plugin logging.
 
-###### reconnectTime
-
-Type: `Integer`  
-Default: `3000`
-
-Specify the reconnect time to the development server from the extension side.
-
 ###### manifestDefaults
 
 Type: `Object`  

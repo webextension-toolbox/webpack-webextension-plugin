@@ -1,16 +1,15 @@
 const path = require('path')
 const { promisify } = require('util')
-const WebSocket = require('ws')
-const compileTemplate = require('./utils/compile-template')
+const IO = require('socket.io')
 const WebpackFileEntry = require('./utils/webpack-file-entry')
 const manifestUtils = require('./manifest-utils')
 const vendors = require('./vendors.json')
+const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin')
+const EnvironmentPlugin = require('webpack/lib/EnvironmentPlugin')
 
 class WebextensionPlugin {
   constructor ({
     port = 35729,
-    host = '127.0.0.1',
-    reconnectTime = 3000,
     autoreload = true,
     vendor = 'chrome',
     manifestDefaults = {},
@@ -18,9 +17,7 @@ class WebextensionPlugin {
   } = {}) {
     // Apply Settings
     this.port = port
-    this.host = host
     this.autoreload = autoreload
-    this.reconnectTime = reconnectTime
     this.vendor = vendor
     this.manifestDefaults = manifestDefaults
     this.quiet = quiet
@@ -39,7 +36,7 @@ class WebextensionPlugin {
    */
   apply (compiler) {
     const { name } = this.constructor
-    compiler.hooks.watchRun.tapPromise(name, this.watchRun.bind(this))
+    compiler.hooks.watchRun.tap(name, this.watchRun.bind(this))
     compiler.hooks.emit.tapPromise(name, this.emit.bind(this))
     compiler.hooks.afterCompile.tap(name, this.afterCompile.bind(this))
     compiler.hooks.done.tap(name, this.done.bind(this))
@@ -50,9 +47,36 @@ class WebextensionPlugin {
    *
    * @param {Boolean} watching
    */
-  watchRun (watching) {
+  watchRun (compiler) {
     this.isWatching = true
-    return this.startServer()
+
+    if (this.autoreload) {
+      // Add client
+      this.addClient(compiler)
+
+      // Start node server
+      this.startServer(compiler)
+    }
+  }
+
+  /**
+   * Add the client to the entry object
+   *
+   * @param {Object} compiler
+   */
+  addClient (compiler) {
+    // Add reload client
+    new SingleEntryPlugin(
+      this.constructor.name,
+      require.resolve('./client'),
+      'webextension-toolbox/client'
+    ).apply(compiler)
+
+    // Configure client via process.env
+    new EnvironmentPlugin({
+      WEBEXTENSION_TOOLBOX_PORT: this.port,
+      WEBEXTENSION_TOOLBOX_QUIET: this.quiet
+    }).apply(compiler)
   }
 
   /**
@@ -64,7 +88,6 @@ class WebextensionPlugin {
     const { inputFileSystem } = compilation
     this.readFile = promisify(inputFileSystem.readFile.bind(inputFileSystem))
     return Promise.all([
-      this.addClient(compilation),
       this.addManifest(compilation)
     ])
   }
@@ -103,22 +126,13 @@ class WebextensionPlugin {
    * on watch mode
    */
   startServer () {
-    return new Promise((resolve, reject) => {
-      if (!this.autoreload || !this.isWatching || this.server) return resolve()
-      const { host, port } = this
-      this.server = new WebSocket.Server({ port }, () => {
-        this.log(`listens on ws://${host}:${port}`)
-        resolve()
+    if (!this.server) {
+      this.server = IO(this.port)
+      this.server.on('connection', socket => {
+        console.log('connection')
+        this.socket = socket
       })
-      this.server.on('error', reject)
-      this.nofiyExtension = data => {
-        this.server.clients.forEach(client => {
-          if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify(data))
-          }
-        })
-      }
-    })
+    }
   }
 
   /**
@@ -130,46 +144,6 @@ class WebextensionPlugin {
     if (!this.quiet) {
       console.log('webpack-webextension-plugin', ...args)
     }
-  }
-
-  /**
-   * Add the client script to assets
-   * when autoreload enabled and is watching
-   *
-   * @param {Object} compilation
-   */
-  async addClient (compilation) {
-    if (this.autoreload && this.isWatching) {
-      await this.compileClient(compilation)
-      // Add client to extension. We will includes this
-      // as a background script in the manifest.json later.
-      compilation.assets['webextension-toolbox/client.js'] = this.client
-    }
-  }
-
-  /**
-   * Compile the client only once
-   * and add it to the assets output
-   *
-   * @param {Object} compilation
-   */
-  async compileClient ({ inputFileSystem }) {
-    // Only compile client once
-    if (this.client) return this.client
-
-    // Get the client as string
-    const clientPath = path.resolve(__dirname, 'client.js')
-    const clientBuffer = await this.readFile(clientPath)
-
-    // Inject settings
-    const client = compileTemplate(clientBuffer.toString(), {
-      port: this.port,
-      host: this.host,
-      reconnectTime: this.reconnectTime
-    })
-
-    // Create webpack file entry
-    this.client = new WebpackFileEntry(client)
   }
 
   /**
@@ -219,16 +193,13 @@ class WebextensionPlugin {
    */
   reloadExtensions (stats) {
     // Skip in normal mode
-    if (!this.server || !this.isWatching) return
+    if (!this.autoreload || !this.server || !this.isWatching) return
 
     // Get changed files since last compile
     const changedFiles = this.extractChangedFiles(stats.compilation)
     if (changedFiles.length) {
       this.log('reloading extension...')
-      this.nofiyExtension({
-        action: 'reload',
-        changedFiles
-      })
+      this.socket.broadcast.emit('reload', changedFiles)
     }
   }
 
