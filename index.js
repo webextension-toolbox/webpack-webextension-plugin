@@ -9,7 +9,7 @@ const vendors = require('./vendors.json')
 class WebextensionPlugin {
   constructor ({
     port = 35729,
-    host = 'localhost',
+    host = '127.0.0.1',
     reconnectTime = 3000,
     autoreload = true,
     vendor = 'chrome',

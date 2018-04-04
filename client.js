@@ -1,6 +1,6 @@
 
 ;(function webextensionAutoReload ({ WebSocket, chrome, browser }) {
-  const host = /* PLACEHOLDER-HOST */ 'localhost' /* PLACEHOLDER-HOST */
+  const host = /* PLACEHOLDER-HOST */ '127.0.0.1' /* PLACEHOLDER-HOST */
   const port = /* PLACEHOLDER-PORT */ 35729 /* PLACEHOLDER-PORT */
   const reconnectTime = /* PLACEHOLDER-RECONNECTTIME */ 3000 /* PLACEHOLDER-RECONNECTTIME */
   const quiet = /* PLACEHOLDER-QUIET */ false /* PLACEHOLDER-QUIET */
