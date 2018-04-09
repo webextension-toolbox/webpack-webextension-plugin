@@ -196,7 +196,7 @@ class WebextensionPlugin {
     }
 
     // Tranform __chrome__key -> key
-    manifest = manifestUtils.transformVendorKeys(manifest)
+    manifest = manifestUtils.transformVendorKeys(manifest, this.vendor)
 
     // Validate
     await manifestUtils.validate(manifest)
