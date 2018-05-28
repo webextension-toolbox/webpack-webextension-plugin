@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "description": "Webpack plugin that compiles web-extension manifest.json files and adds smart auto reload",
   "main": "index.js",
-  "repository": "git@github.com:HaNdTriX/webpack-webextension-plugin.git",
+  "repository": "git@github.com:webextension-tools/webpack-webextension-plugin.git",
   "author": "Henrik Wenz <HaNdTriX@gmail.com> (https://github.com/HaNdTriX)",
   "license": "MIT",
   "private": false,
