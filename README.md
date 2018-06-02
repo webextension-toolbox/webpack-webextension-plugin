@@ -122,6 +122,24 @@ if the vendor is `chrome` this compiles to:
 }
 ```
 
+---
+
+Add keys to multiple vendors by seperating them with | in the prefix
+
+```
+{
+  __chrome|opera__name: "SuperBlink"
+}
+```
+
+if the vendor is `chrome` or `opera`, this compiles to:
+
+```
+{
+  "name": "SuperBlink"
+}
+```
+
 ### Why are you not using mozillas [web-ext](https://github.com/mozilla/web-ext) package?
 
 * `webpack-webextension-plugin` should work for every browser in the same way.
