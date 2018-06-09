@@ -4,6 +4,10 @@ environment:
     - nodejs_version: "Current"
     - nodejs_version: "LTS"
 
+platform:
+  - x86
+  - x64
+
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node.js or io.js
