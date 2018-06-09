@@ -1,10 +1,10 @@
 # webpack-webextension-plugin
 
 [![npm package](https://badge.fury.io/js/webpack-webextension-plugin.svg)](https://www.npmjs.com/package/webpack-webextension-plugin)
-[![build status](https://travis-ci.org/HaNdTriX/webpack-webextension-plugin.svg?branch=master)](https://travis-ci.org/HaNdTriX/webpack-webextension-plugin) 
-[![dependencies](https://img.shields.io/bithound/dependencies/github/rexxars/sse-channel.svg)](https://github.com/HaNdTriX/webpack-webextension-plugin)
+[![build status](https://travis-ci.org/webextension-tools/webpack-webextension-plugin.svg?branch=master)](https://travis-ci.org/webextension-tools/webpack-webextension-plugin) 
+[![dependencies](https://img.shields.io/bithound/dependencies/github/rexxars/sse-channel.svg)](https://github.com/webextension-tools/webpack-webextension-plugin)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![license](https://img.shields.io/npm/l/webpack-webextension-plugin.svg)](https://github.com/HaNdTriX/webpack-webextension-plugin/blob/master/LICENSE)
+[![license](https://img.shields.io/npm/l/webpack-webextension-plugin.svg)](https://github.com/webextension-tools/webpack-webextension-plugin/blob/master/LICENSE)
 
 Webpack plugin that compiles web-extension `manifest.json` files and adds smart auto reload.
 
