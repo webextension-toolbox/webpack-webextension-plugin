@@ -3,6 +3,7 @@
 [![npm package](https://badge.fury.io/js/webpack-webextension-plugin.svg)](https://www.npmjs.com/package/webpack-webextension-plugin)
 [![build status](https://travis-ci.org/webextension-tools/webpack-webextension-plugin.svg?branch=master)](https://travis-ci.org/webextension-tools/webpack-webextension-plugin) 
 [![dependencies](https://david-dm.org/webextension-tools/webpack-webextension-plugin/status.svg)](https://david-dm.org/webextension-tools/webpack-webextension-plugin)
+[![devDependencies](https://david-dm.org/webextension-tools/webpack-webextension-plugin/dev-status.svg)](https://david-dm.org/webextension-tools/webpack-webextension-plugin?type=dev)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![license](https://img.shields.io/npm/l/webpack-webextension-plugin.svg)](https://github.com/webextension-tools/webpack-webextension-plugin/blob/master/LICENSE)
 
