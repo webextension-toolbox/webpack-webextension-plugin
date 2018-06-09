@@ -5,7 +5,7 @@
 [![dependencies](https://david-dm.org/webextension-tools/webpack-webextension-plugin/status.svg)](https://david-dm.org/webextension-tools/webpack-webextension-plugin)
 [![devDependencies](https://david-dm.org/webextension-tools/webpack-webextension-plugin/dev-status.svg)](https://david-dm.org/webextension-tools/webpack-webextension-plugin?type=dev)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![license](https://img.shields.io/npm/l/webpack-webextension-plugin.svg)](https://github.com/webextension-tools/webpack-webextension-plugin/blob/master/LICENSE)
+[![license](https://img.shields.io/npm/l/webpack-webextension-plugin.svg)](https://github.com/webextension-tools/webpack-webextension-plugin/blob/master/LICENSE) [![Greenkeeper badge](https://badges.greenkeeper.io/webextension-tools/webpack-webextension-plugin.svg)](https://greenkeeper.io/)
 
 Webpack plugin that compiles web-extension `manifest.json` files and adds smart auto reload.
 
