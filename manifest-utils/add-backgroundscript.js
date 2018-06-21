@@ -1,16 +1,24 @@
-module.exports = function addBackgroundscript (manifest, path) {
-  if (!manifest.background) {
-    manifest.background = {}
-  }
+module.exports = function addBackgroundscript(manifest, path) {
+	var target;
+	if (manifest.app) {
+		target = manifest.app;
+	} else {
+		target = manifest;
+	}
 
-  if (!manifest.background.scripts) {
-    manifest.background.scripts = []
-  }
+	if (!target.background) {
+		target.background = {};
+	}
 
-  manifest.background.scripts = [
-    path,
-    ...manifest.background.scripts
-  ]
+	if (!target.background.scripts) {
+		target.background.scripts = []
+	}
 
-  return manifest
+	target.background.scripts = [
+		path,
+		...target.background.scripts
+	]
+
+	return manifest
 }
+
