@@ -1,4 +1,5 @@
-# webpack-webextension-plugin
+[![webextension-webpack-plugin](./assets/icon.svg)](https://www.npmjs.com/package/webpack-webextension-plugin)
+# WebextensionWebpackPlugin
 
 [![npm package](https://badge.fury.io/js/webpack-webextension-plugin.svg)](https://www.npmjs.com/package/webpack-webextension-plugin)
 [![build status](https://travis-ci.org/webextension-toolbox/webpack-webextension-plugin.svg?branch=master)](https://travis-ci.org/webextension-toolbox/webpack-webextension-plugin) 
