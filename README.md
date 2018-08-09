@@ -2,7 +2,8 @@
 # WebextensionWebpackPlugin
 
 [![npm package](https://badge.fury.io/js/webpack-webextension-plugin.svg)](https://www.npmjs.com/package/webpack-webextension-plugin)
-[![build status](https://travis-ci.org/webextension-toolbox/webpack-webextension-plugin.svg?branch=master)](https://travis-ci.org/webextension-toolbox/webpack-webextension-plugin) 
+[![build status](https://travis-ci.org/webextension-toolbox/webpack-webextension-plugin.svg?branch=master)](https://travis-ci.org/webextension-toolbox/webpack-webextension-plugin) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwebextension-toolbox%2Fwebpack-webextension-plugin.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwebextension-toolbox%2Fwebpack-webextension-plugin?ref=badge_shield)
+
 [![dependencies](https://david-dm.org/webextension-toolbox/webpack-webextension-plugin/status.svg)](https://david-dm.org/webextension-toolbox/webpack-webextension-plugin)
 [![devDependencies](https://david-dm.org/webextension-toolbox/webpack-webextension-plugin/dev-status.svg)](https://david-dm.org/webextension-toolbox/webpack-webextension-plugin?type=dev)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
@@ -158,3 +159,6 @@ if the vendor is `chrome` or `opera`, this compiles to:
 Copyright 2018 Henrik Wenz
 
 This project is free software released under the MIT license.
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwebextension-toolbox%2Fwebpack-webextension-plugin.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwebextension-toolbox%2Fwebpack-webextension-plugin?ref=badge_large)
