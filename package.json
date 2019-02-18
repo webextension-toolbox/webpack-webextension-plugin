@@ -18,7 +18,8 @@
   },
   "devDependencies": {
     "jest": "^23.0.1",
-    "standard": "^11.0.1"
+    "standard": "^11.0.1",
+    "tmp-promise": "^1.0.5"
   },
   "engines": {
     "node": ">=v8.1.4"

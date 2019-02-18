@@ -203,7 +203,11 @@ class WebextensionPlugin {
 
     // Add client
     if (this.autoreload && this.isWatching) {
-      manifest = manifestUtils.addBackgroundscript(manifest, 'webextension-toolbox/client.js')
+      let result = await manifestUtils.addBackgroundscript(manifest, 'webextension-toolbox/client.js', compilation.options.context)
+      manifest = result.manifest
+      if (result.backgroundPagePath) {
+        compilation.assets[result.backgroundPagePath] = new WebpackFileEntry(result.backgroundPageStr)
+      }
     }
 
     // Create webpack file entry
