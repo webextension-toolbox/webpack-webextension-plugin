@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "chalk": "^2.4.1",
-    "joi": "^13.3.0",
+    "@hapi/joi": "^15.0.1",
     "ws": "^5.2.0"
   },
   "devDependencies": {
