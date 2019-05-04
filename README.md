@@ -7,7 +7,6 @@
 [![devDependencies](https://david-dm.org/webextension-toolbox/webpack-webextension-plugin/dev-status.svg)](https://david-dm.org/webextension-toolbox/webpack-webextension-plugin?type=dev)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![license](https://img.shields.io/npm/l/webpack-webextension-plugin.svg)](https://github.com/webextension-toolbox/webpack-webextension-plugin/blob/master/LICENSE)
-[![Build status](https://ci.appveyor.com/api/projects/status/rc2tpnnq332qdf43?svg=true)](https://ci.appveyor.com/project/webextension-toolbox/webpack-webextension-plugin)
 
 Webpack plugin that compiles web-extension `manifest.json` files and adds smart auto reload.
 
