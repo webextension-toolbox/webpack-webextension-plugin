@@ -1,5 +1,5 @@
-[![webextension-webpack-plugin](./assets/icon.svg)](https://www.npmjs.com/package/webpack-webextension-plugin)
-# WebextensionWebpackPlugin
+[<img align="right" src="./assets/icon.svg?sanitize=true">](https://www.npmjs.com/package/webpack-webextension-plugin)
+# Webpack WebExtension Plugin
 
 [![npm package](https://badge.fury.io/js/webpack-webextension-plugin.svg)](https://www.npmjs.com/package/webpack-webextension-plugin)
 [![build status](https://travis-ci.org/webextension-toolbox/webpack-webextension-plugin.svg?branch=master)](https://travis-ci.org/webextension-toolbox/webpack-webextension-plugin) 
@@ -7,7 +7,6 @@
 [![devDependencies](https://david-dm.org/webextension-toolbox/webpack-webextension-plugin/dev-status.svg)](https://david-dm.org/webextension-toolbox/webpack-webextension-plugin?type=dev)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![license](https://img.shields.io/npm/l/webpack-webextension-plugin.svg)](https://github.com/webextension-toolbox/webpack-webextension-plugin/blob/master/LICENSE)
-[![Build status](https://ci.appveyor.com/api/projects/status/rc2tpnnq332qdf43?svg=true)](https://ci.appveyor.com/project/webextension-toolbox/webpack-webextension-plugin)
 
 Webpack plugin that compiles web-extension `manifest.json` files and adds smart auto reload.
 
