@@ -14,7 +14,8 @@ class WebextensionPlugin {
     autoreload = true,
     vendor = 'chrome',
     manifestDefaults = {},
-    quiet = false
+    quiet = false,
+    isProduction = false
   } = {}) {
     // Apply Settings
     this.port = port
@@ -24,6 +25,7 @@ class WebextensionPlugin {
     this.vendor = vendor
     this.manifestDefaults = manifestDefaults
     this.quiet = quiet
+    this.isProduction = isProduction
 
     // Set some defaults
     this.server = null
@@ -64,7 +66,7 @@ class WebextensionPlugin {
     const { inputFileSystem } = compilation
     this.readFile = promisify(inputFileSystem.readFile.bind(inputFileSystem))
     return Promise.all([
-      this.addClient(compilation),
+      !this.isProduction && this.addClient(compilation),
       this.addManifest(compilation)
     ])
   }
@@ -202,7 +204,7 @@ class WebextensionPlugin {
     await manifestUtils.validate(manifest)
 
     // Add client
-    if (this.autoreload && this.isWatching) {
+    if (this.autoreload && this.isWatching && !this.isProduction) {
       manifest = manifestUtils.addBackgroundscript(manifest, 'webextension-toolbox/client.js')
     }
 
