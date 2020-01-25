@@ -120,7 +120,7 @@
   function getManifestFileDeps () {
     const manifest = (browser || chrome).runtime.getManifest()
     const manifestStr = JSON.stringify(manifest)
-    return manifestStr.match(fileRegex)
+    return manifestStr.match(fileRegex) || []
   }
 
   /**
