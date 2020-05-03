@@ -4,6 +4,7 @@
   const port = /* PLACEHOLDER-PORT */ 35729 /* PLACEHOLDER-PORT */
   const reconnectTime = /* PLACEHOLDER-RECONNECTTIME */ 3000 /* PLACEHOLDER-RECONNECTTIME */
   const quiet = /* PLACEHOLDER-QUIET */ false /* PLACEHOLDER-QUIET */
+  const fileRegex = /[^"]*\.[a-zA-Z]+/g
 
   connect()
 
@@ -119,8 +120,7 @@
   function getManifestFileDeps () {
     const manifest = (browser || chrome).runtime.getManifest()
     const manifestStr = JSON.stringify(manifest)
-    const fileRegex = /[^"]*\.[a-zA-Z]+/g
-    return manifestStr.match(fileRegex)
+    return manifestStr.match(fileRegex) || []
   }
 
   /**
