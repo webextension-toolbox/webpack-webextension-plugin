@@ -1,3 +1,2 @@
-.travis.yml
-appveyor.yml
-renovate.json
+assets
+azure-pipelines.yml
