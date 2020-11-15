@@ -182,10 +182,10 @@ class WebextensionPlugin {
     // Load manifest
     const manifestPath = path.join(compilation.options.context, 'manifest.json')
     const manifestBuffer = await this.readFile(manifestPath)
-
+    let manifest
     // Convert to JSON
     try {
-      var manifest = JSON.parse(manifestBuffer)
+      manifest = JSON.parse(manifestBuffer)
     } catch (error) {
       throw new Error('Could not parse manifest.json')
     }

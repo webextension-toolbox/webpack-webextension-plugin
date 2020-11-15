@@ -31,7 +31,7 @@
       log('Connection error.')
     }
     connection.onclose = () => {
-      log(`Connection lost. Reconnecting in %ss'`, reconnectTime / 1000)
+      log('Connection lost. Reconnecting in %ss\'', reconnectTime / 1000)
       reconnect()
     }
   }

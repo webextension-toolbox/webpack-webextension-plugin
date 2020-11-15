@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi')
+const Joi = require('joi')
 const chalk = require('chalk')
 
 const schema = Joi.object({
@@ -135,8 +135,9 @@ const schema = Joi.object({
 })
 
 module.exports = async function validate (manifestJSON) {
+  let result
   try {
-    var result = await Joi.validate(manifestJSON, schema, {
+    result = await Joi.validate(manifestJSON, schema, {
       allowUnknown: true
     })
   } catch (error) {
