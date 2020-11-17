@@ -21,6 +21,6 @@
     "standard": "latest"
   },
   "engines": {
-    "node": ">=v8.1.4"
+    "node": ">=12"
   }
 }
