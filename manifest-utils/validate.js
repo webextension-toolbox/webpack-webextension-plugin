@@ -137,9 +137,7 @@ const schema = Joi.object({
 module.exports = async function validate (manifestJSON) {
   let result
   try {
-    result = await Joi.validate(manifestJSON, schema, {
-      allowUnknown: true
-    })
+    result = await schema.validateAsync(manifestJSON, { allowUnknown: true } );
   } catch (error) {
     throw new Error('manifest.json: \n' + chalk.reset(error.annotate()))
   }
