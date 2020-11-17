@@ -1,4 +1,4 @@
-[<img align="right" src="./assets/icon.svg?sanitize=true">](https://www.npmjs.com/package/webpack-webextension-plugin)
+[<img align="right" src="./.github/assets/icon.svg?sanitize=true">](https://www.npmjs.com/package/webpack-webextension-plugin)
 # Webpack WebExtension Plugin
 
 [![npm package](https://badge.fury.io/js/webpack-webextension-plugin.svg)](https://www.npmjs.com/package/webpack-webextension-plugin)
