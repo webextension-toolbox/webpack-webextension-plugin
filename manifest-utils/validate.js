@@ -1,5 +1,6 @@
 const Joi = require('joi')
 const chalk = require('chalk')
+const stripAnsi = require('strip-ansi')
 
 const schema = Joi.object({
   // The extension's author, intended for display in the browser's user interface. If the developer key is supplied and it contains the "name" property, it will override the author key. There's no way to specify multiple authors.
@@ -139,7 +140,7 @@ module.exports = async function validate (manifestJSON) {
   try {
     result = await schema.validateAsync(manifestJSON, { allowUnknown: true } );
   } catch (error) {
-    throw new Error('manifest.json: \n' + chalk.reset(error.annotate()))
+    throw new Error('manifest.json: \n' + stripAnsi(error.annotate()))
   }
   return result
 }
