@@ -3,8 +3,8 @@
 exports[`validates manifest 1`] = `
 "manifest.json: 
 {
-  [41m\\"name\\"[0m[31m [1]: -- missing --[0m
+  \\"name\\" [1]: -- missing --
 }
-[31m
-[1] \\"name\\" is required[0m"
+
+[1] \\"name\\" is required"
 `;
