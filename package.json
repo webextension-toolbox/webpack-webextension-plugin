@@ -1,6 +1,6 @@
 {
   "name": "webpack-webextension-plugin",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Webpack plugin that compiles web-extension manifest.json files and adds smart auto reload",
   "main": "index.js",
   "repository": "git@github.com:webextension-tools/webpack-webextension-plugin.git",
@@ -12,16 +12,17 @@
     "test": "jest"
   },
   "dependencies": {
-    "chalk": "^2.4.1",
-    "@hapi/joi": "^15.0.1",
-    "ws": "^7.0.0"
+    "chalk": "~4.1.0",
+    "joi": "~17.3.0",
+    "strip-ansi": "^6.0.0",
+    "ws": "~7.4.0"
   },
   "devDependencies": {
-    "jest": "^24.0.0",
-    "standard": "^12.0.0",
     "tmp-promise": "^1.0.5"
+    "jest": "~26.6.3",
+    "standard": "latest"
   },
   "engines": {
-    "node": ">=v8.1.4"
+    "node": ">=12"
   }
 }
