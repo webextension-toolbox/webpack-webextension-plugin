@@ -86,22 +86,22 @@
 
     // Full reload if we have no changed files (dump reload!)
     if (!changedFiles) {
-      (browser || chrome).runtime.reload()
+      return (browser || chrome).runtime.reload()
     }
 
     // Full reload manifest changed
     if (changedFiles.some(file => file === 'manifest.json')) {
-      smartReloadExtension()
+      return (browser || chrome).runtime.reload()
     }
 
     // Full reload if _locales changed
     if (changedFiles.some(file => /^_locales\//.test(file))) {
-      smartReloadExtension()
+      return (browser || chrome).runtime.reload()
     }
 
     // Full reload if manifest deps changed
     if (getManifestFileDeps().some(file => changedFiles.includes(file))) {
-      smartReloadExtension()
+      return (browser || chrome).runtime.reload()
     }
 
     // Reload current tab (smart reload)
