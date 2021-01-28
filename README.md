@@ -49,7 +49,7 @@ Any of the options below.
 
 Type: `String`  
 Default: `chrome`  
-Any of: `chrome`, `opera`, `firefox`, `edge`
+Any of: `chrome`, `opera`, `firefox`, `edge`, `safari`
 
 Used for vendor prefixing in the `manifest.json`. More infos regarding this can be found below.
 
@@ -109,7 +109,8 @@ Vendor prefixed manifest keys allow you to write one `manifest.json` for multibl
   "__chrome__name": "SuperChrome",
   "__firefox__name": "SuperFox",
   "__edge__name": "SuperEdge",
-  "__opera__name": "SuperOpera"
+  "__opera__name": "SuperOpera",
+  "__safari__name": "SuperSafari"
 }
 ```
 
