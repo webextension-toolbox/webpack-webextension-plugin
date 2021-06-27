@@ -40,7 +40,7 @@ class WebextensionPlugin {
   apply (compiler) {
     const { name } = this.constructor
     compiler.hooks.watchRun.tapPromise(name, this.watchRun.bind(this))
-    compiler.hooks.beforeRun.tap(name, this.beforeRun.bind(this));
+    compiler.hooks.beforeRun.tap(name, this.beforeRun.bind(this))
     compiler.hooks.make.tapPromise(name, this.make.bind(this))
     compiler.hooks.afterCompile.tap(name, this.afterCompile.bind(this))
     compiler.hooks.done.tap(name, this.done.bind(this))
@@ -61,7 +61,7 @@ class WebextensionPlugin {
    *
    * @param {Object} compilation
    */
-  beforeRun({ inputFileSystem }) {
+  beforeRun ({ inputFileSystem }) {
     this.readFile = promisify(inputFileSystem.readFile.bind(inputFileSystem))
   }
 
@@ -70,7 +70,7 @@ class WebextensionPlugin {
    *
    * @param {Object} compilation
    */
-  make(compilation) {
+  make (compilation) {
     return Promise.all([
       this.addClient(compilation),
       this.addManifest(compilation)
