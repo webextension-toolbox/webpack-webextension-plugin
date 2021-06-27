@@ -143,7 +143,7 @@ if the vendor is `chrome` or `opera`, this compiles to:
 ### Why are you not using mozillas [web-ext](https://github.com/mozilla/web-ext) package?
 
 * `webpack-webextension-plugin` should work for every browser in the same way.
-* `web-ext` only works for firefox. Nevertheless if your primary browser is firefox, you should definetly check it out.
+* `web-ext` only works with Chrome and Firefox. You should definitely still check it out.
 
 ## Links
 
