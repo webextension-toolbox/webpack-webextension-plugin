@@ -12,15 +12,15 @@
     "test": "jest"
   },
   "dependencies": {
-    "chalk": "~4.1.0",
-    "joi": "~17.3.0",
+    "chalk": "4.1.1",
+    "joi": "17.4.0",
     "strip-ansi": "^6.0.0",
-    "ws": "~7.4.0"
+    "ws": "7.5.0"
   },
   "devDependencies": {
-    "jest": "~26.6.3",
+    "jest": "27.0.5",
     "standard": "latest",
-    "tmp-promise": "^1.0.5"
+    "tmp-promise": "3.0.2"
   },
   "engines": {
     "node": ">=12"
