@@ -9,11 +9,11 @@ module.exports = async function addBackgroundscript (manifest, scriptPath, conte
   if (manifest.background.page && manifest.background.scripts) {
     throw new Error('Found background page as well as scripts in manifest, only 1 may be present')
   } else if (manifest.background.page) {
-    let pagePath = path.join(context, manifest.background.page)
-    let pageString = await readFile(pagePath, { encoding: 'utf8' })
+    const pagePath = path.join(context, manifest.background.page)
+    const pageString = await readFile(pagePath, { encoding: 'utf8' })
 
     const bodyEnd = pageString.search(/\s*<\/body>/)
-    let backgroundPageStr = pageString.substring(0, bodyEnd) + '\n<script src="' + scriptPath + '"></script>' + pageString.substring(bodyEnd)
+    const backgroundPageStr = pageString.substring(0, bodyEnd) + '\n<script src="' + scriptPath + '"></script>' + pageString.substring(bodyEnd)
 
     return { manifest, backgroundPagePath: manifest.background.page, backgroundPageStr }
   } else {

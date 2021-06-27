@@ -63,10 +63,10 @@ test('transform combined keys correctly', () => {
   const manifest = {
     version: '42.0.0',
     name: 'left-pad',
-    "__safari|opera__name": 'pad'
+    '__safari|opera__name': 'pad'
   }
   const resultSafari = transformVendorKeys(manifest, 'safari')
   const resultOpera = transformVendorKeys(manifest, 'opera')
-  expect(resultSafari.name).toEqual(manifest["__safari|opera__name"])
-  expect(resultOpera.name).toEqual(manifest["__safari|opera__name"])
+  expect(resultSafari.name).toEqual(manifest['__safari|opera__name'])
+  expect(resultOpera.name).toEqual(manifest['__safari|opera__name'])
 })
