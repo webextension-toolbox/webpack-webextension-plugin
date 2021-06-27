@@ -1,5 +1,4 @@
 const Joi = require('joi')
-const chalk = require('chalk')
 const stripAnsi = require('strip-ansi')
 
 const schema = Joi.object({
@@ -138,7 +137,7 @@ const schema = Joi.object({
 module.exports = async function validate (manifestJSON) {
   let result
   try {
-    result = await schema.validateAsync(manifestJSON, { allowUnknown: true } );
+    result = await schema.validateAsync(manifestJSON, { allowUnknown: true })
   } catch (error) {
     throw new Error('manifest.json: \n' + stripAnsi(error.annotate()))
   }
