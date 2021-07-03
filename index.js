@@ -2,7 +2,6 @@ const path = require('path')
 const { promisify } = require('util')
 const WebSocket = require('ws')
 const compileTemplate = require('./utils/compile-template')
-const WebpackFileEntry = require('./utils/webpack-file-entry')
 const manifestUtils = require('./manifest-utils')
 const vendors = require('./vendors.json')
 
@@ -39,8 +38,10 @@ class WebextensionPlugin {
    */
   apply (compiler) {
     const { name } = this.constructor
+    const { inputFileSystem } = compiler;
+    this.readFile = promisify(inputFileSystem.readFile.bind(inputFileSystem))
+    this.sources = compiler.webpack.sources
     compiler.hooks.watchRun.tapPromise(name, this.watchRun.bind(this))
-    compiler.hooks.beforeRun.tap(name, this.beforeRun.bind(this))
     compiler.hooks.make.tapPromise(name, this.make.bind(this))
     compiler.hooks.afterCompile.tap(name, this.afterCompile.bind(this))
     compiler.hooks.done.tap(name, this.done.bind(this))
@@ -54,15 +55,6 @@ class WebextensionPlugin {
   watchRun (watching) {
     this.isWatching = true
     return this.startServer()
-  }
-
-  /**
-   * Webpack beforeRun hook
-   *
-   * @param {Object} compilation
-   */
-  beforeRun ({ inputFileSystem }) {
-    this.readFile = promisify(inputFileSystem.readFile.bind(inputFileSystem))
   }
 
   /**
@@ -148,20 +140,18 @@ class WebextensionPlugin {
    */
   async addClient (compilation) {
     if (this.autoreload && this.isWatching) {
-      await this.compileClient(compilation)
       // Add client to extension. We will includes this
       // as a background script in the manifest.json later.
-      compilation.assets['webextension-toolbox/client.js'] = this.client
+      const client = await this.compileClient()
+      compilation.emitAsset('webextension-toolbox/client.js', new this.sources.RawSource(client))
     }
   }
 
   /**
    * Compile the client only once
    * and add it to the assets output
-   *
-   * @param {Object} compilation
    */
-  async compileClient ({ inputFileSystem }) {
+  async compileClient () {
     // Only compile client once
     if (this.client) return this.client
 
@@ -170,14 +160,13 @@ class WebextensionPlugin {
     const clientBuffer = await this.readFile(clientPath)
 
     // Inject settings
-    const client = compileTemplate(clientBuffer.toString(), {
+    this.client = compileTemplate(clientBuffer.toString(), {
       port: this.port,
       host: this.host,
       reconnectTime: this.reconnectTime
     })
 
-    // Create webpack file entry
-    this.client = new WebpackFileEntry(client)
+    return this.client
   }
 
   /**
@@ -214,13 +203,13 @@ class WebextensionPlugin {
       const result = await manifestUtils.addBackgroundscript(manifest, 'webextension-toolbox/client.js', compilation.options.context)
       manifest = result.manifest
       if (result.backgroundPagePath) {
-        compilation.assets[result.backgroundPagePath] = new WebpackFileEntry(result.backgroundPageStr)
+        compilation.emitAsset(result.backgroundPagePath, new this.sources.RawSource(result.backgroundPageStr))
       }
     }
 
     // Create webpack file entry
     const manifestStr = JSON.stringify(manifest, null, 2)
-    compilation.assets['manifest.json'] = new WebpackFileEntry(manifestStr)
+    compilation.emitAsset('manifest.json', new this.sources.RawSource(manifestStr))
   }
 
   /**
