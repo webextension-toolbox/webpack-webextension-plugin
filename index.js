@@ -249,7 +249,7 @@ class WebextensionPlugin {
         changedFiles.set(watchfile, timestamp)
       }
     }
-    this.prevFileSystemInfo = fileSystemInfo.__fileTimestamps
+    this.prevFileSystemInfo = fileSystemInfo._fileTimestamps
 
     // Remove context path
     const contextRegex = new RegExp('^' + options.context.replace('/', '\\/') + '\\/')
