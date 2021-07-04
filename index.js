@@ -38,7 +38,7 @@ class WebextensionPlugin {
    */
   apply (compiler) {
     const { name } = this.constructor
-    const { inputFileSystem } = compiler;
+    const { inputFileSystem } = compiler
     this.readFile = promisify(inputFileSystem.readFile.bind(inputFileSystem))
     this.sources = compiler.webpack.sources
     compiler.hooks.watchRun.tapPromise(name, this.watchRun.bind(this))
