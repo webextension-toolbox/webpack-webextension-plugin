@@ -15,7 +15,7 @@
     "chalk": "4.1.1",
     "joi": "17.4.0",
     "strip-ansi": "^6.0.0",
-    "ws": "7.5.1"
+    "ws": "7.5.3"
   },
   "devDependencies": {
     "jest": "27.0.6",
