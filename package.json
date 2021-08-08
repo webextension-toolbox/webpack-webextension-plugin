@@ -12,7 +12,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "chalk": "4.1.1",
+    "chalk": "4.1.2",
     "joi": "17.4.1",
     "strip-ansi": "^6.0.0",
     "ws": "8.0.0"
