@@ -28,7 +28,7 @@ class WebextensionPlugin {
     this.server = null
     this.isWatching = false
     this.startTime = Date.now()
-    this.prevFileSystemInfo = new Map()
+    this.prevFileTimestamps = new Map()
   }
 
   /**
@@ -239,17 +239,17 @@ class WebextensionPlugin {
    *
    * @param {Object} compilation
    */
-  extractChangedFiles ({ fileSystemInfo, options }) {
+  extractChangedFiles ({ fileTimestamps, options }) {
     const changedFiles = new Map()
 
     // Compare file timestamps with last compilation
-    for (const [watchfile, timestamp] of fileSystemInfo._fileTimestamps.entries()) {
+    for (const [watchfile, timestamp] of fileTimestamps.entries()) {
       const isFile = Boolean(path.extname(watchfile))
-      if (isFile && (this.prevFileSystemInfo.get(watchfile) || this.startTime) < (fileSystemInfo._fileTimestamps.get(watchfile) || Infinity)) {
+      if (isFile && (this.prevFileTimestamps.get(watchfile) || this.startTime) < (fileTimestamps.get(watchfile) || Infinity)) {
         changedFiles.set(watchfile, timestamp)
       }
     }
-    this.prevFileSystemInfo = fileSystemInfo._fileTimestamps
+    this.prevFileTimestamps = fileTimestamps
 
     // Remove context path
     const contextRegex = new RegExp('^' + options.context.replace('/', '\\/') + '\\/')
