@@ -18,7 +18,7 @@
     "ws": "8.0.0"
   },
   "devDependencies": {
-    "jest": "27.0.6",
+    "jest": "27.4.3",
     "standard": "latest",
     "tmp-promise": "3.0.2"
   },
