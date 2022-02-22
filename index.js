@@ -196,7 +196,7 @@ class WebextensionPlugin {
     manifest = manifestUtils.transformVendorKeys(manifest, this.vendor)
 
     // Validate
-    // todo: the plugin should offer an option to skip the validation because 
+    // todo: the plugin should offer an option to skip the validation because
     // the syntax of e.g. MV3 can still change. We don't want to make the whole
     // plugin useless by blocking the whole process due to validation fails.
     await manifestUtils.validate(manifest)
