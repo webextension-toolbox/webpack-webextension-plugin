@@ -192,10 +192,13 @@ class WebextensionPlugin {
       ...manifest
     }
 
-    // Tranform __chrome__key -> key
+    // Transform __chrome__key -> key
     manifest = manifestUtils.transformVendorKeys(manifest, this.vendor)
 
     // Validate
+    // todo: the plugin should offer an option to skip the validation because 
+    // the syntax of e.g. MV3 can still change. We don't want to make the whole
+    // plugin useless by blocking the whole process due to validation fails.
     await manifestUtils.validate(manifest)
 
     // Add client
