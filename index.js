@@ -201,7 +201,7 @@ class WebextensionPlugin {
     // The plugin offers an option to skip the validation because
     // the syntax of e.g. MV3 is still evolving. We don't want to make the whole
     // plugin useless by blocking the whole compilation due to an obsolete validation.
-    if (!skipManifestValidation) {
+    if (!this.skipManifestValidation) {
       await manifestUtils.validate(manifest)
     }
 
