@@ -53,4 +53,5 @@ test('validate manifest v3', async () => {
   // Assert
   // todo: comment out the assert for now to pass the CI
   // expect(error).toEqual(null)
+  console.log(error)
 })
