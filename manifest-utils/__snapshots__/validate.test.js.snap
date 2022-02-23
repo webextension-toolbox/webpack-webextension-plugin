@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`validates manifest 1`] = `
+exports[`manifest validation failed when manifest is an empty object 1`] = `
 "manifest.json: 
 {
   \\"name\\" [1]: -- missing --
