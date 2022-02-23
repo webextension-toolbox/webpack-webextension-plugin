@@ -20,7 +20,7 @@
   "devDependencies": {
     "jest": "27.5.1",
     "standard": "latest",
-    "tmp-promise": "3.0.2"
+    "tmp-promise": "3.0.3"
   },
   "engines": {
     "node": ">=12"
