@@ -5,6 +5,9 @@ const compileTemplate = require('./utils/compile-template')
 const manifestUtils = require('./manifest-utils')
 const vendors = require('./vendors.json')
 
+const clientPath = 'webextension-toolbox/client.js'
+const manifestName = 'manifest.json'
+
 class WebextensionPlugin {
   constructor ({
     port = 35729,
@@ -29,8 +32,9 @@ class WebextensionPlugin {
     // Set some defaults
     this.server = null
     this.isWatching = false
+    this.manifestChanged = true
+    this.clientAdded = false
     this.startTime = Date.now()
-    this.prevFileSystemInfo = new Map()
   }
 
   /**
@@ -43,7 +47,9 @@ class WebextensionPlugin {
     const { inputFileSystem } = compiler
     this.readFile = promisify(inputFileSystem.readFile.bind(inputFileSystem))
     this.sources = compiler.webpack.sources
+    this.cleanPlugin = compiler.webpack.CleanPlugin
     compiler.hooks.watchRun.tapPromise(name, this.watchRun.bind(this))
+    compiler.hooks.compilation.tap(name, this.compilation.bind(this))
     compiler.hooks.make.tapPromise(name, this.make.bind(this))
     compiler.hooks.afterCompile.tap(name, this.afterCompile.bind(this))
     compiler.hooks.done.tap(name, this.done.bind(this))
@@ -52,11 +58,21 @@ class WebextensionPlugin {
   /**
    * Webpack watchRun hook
    *
-   * @param {Boolean} watching
+   * @param {Object} watching
    */
   watchRun (watching) {
     this.isWatching = true
+    this.detectManifestModification(watching)
     return this.startServer()
+  }
+
+  /**
+   * Webpack compilation hook
+   *
+   * @param {Object} compilation
+   */
+  compilation (compilation) {
+    this.keepFiles(compilation)
   }
 
   /**
@@ -87,7 +103,7 @@ class WebextensionPlugin {
    */
   watchManifest (compilation) {
     compilation.fileDependencies.add(
-      path.join(compilation.options.context, 'manifest.json')
+      path.join(compilation.options.context, manifestName)
     )
   }
 
@@ -98,6 +114,31 @@ class WebextensionPlugin {
    */
   done (stats) {
     this.reloadExtensions(stats)
+  }
+
+  /**
+   * Prevents deletion of manifest.json and client.js files by clean plugin
+   *
+   * @param {Object} compilation
+   */
+  keepFiles (compilation) {
+    if (this.cleanPlugin) {
+      const keepPredicate = (asset) => asset === manifestName ||
+        (asset === clientPath && this.autoreload && this.isWatching)
+      this.cleanPlugin.getCompilationHooks(compilation).keep.tap(this.constructor.name, keepPredicate)
+    }
+  }
+
+  /**
+   * Detect changed files
+   *
+   * @param {Object} watching
+   */
+  detectManifestModification (watching) {
+    if (watching.modifiedFiles) {
+      const manifestFile = path.join(watching.options.context, manifestName)
+      this.manifestChanged = watching.modifiedFiles.has(manifestFile)
+    }
   }
 
   /**
@@ -141,11 +182,12 @@ class WebextensionPlugin {
    * @param {Object} compilation
    */
   async addClient (compilation) {
-    if (this.autoreload && this.isWatching) {
+    if (this.autoreload && this.isWatching && !this.clientAdded) {
       // Add client to extension. We will includes this
       // as a background script in the manifest.json later.
       const client = await this.compileClient()
-      compilation.emitAsset('webextension-toolbox/client.js', new this.sources.RawSource(client))
+      compilation.emitAsset(clientPath, new this.sources.RawSource(client))
+      this.clientAdded = true
     }
   }
 
@@ -178,45 +220,47 @@ class WebextensionPlugin {
    * @param {Object} compilation
    */
   async addManifest (compilation) {
-    // Load manifest
-    const manifestPath = path.join(compilation.options.context, 'manifest.json')
-    const manifestBuffer = await this.readFile(manifestPath)
-    let manifest
-    // Convert to JSON
-    try {
-      manifest = JSON.parse(manifestBuffer)
-    } catch (error) {
-      throw new Error('Could not parse manifest.json')
-    }
-
-    manifest = {
-      ...this.manifestDefaults,
-      ...manifest
-    }
-
-    // Transform __chrome__key -> key
-    manifest = manifestUtils.transformVendorKeys(manifest, this.vendor)
-
-    // Validate manifest.json syntax
-    // The plugin offers an option to skip the validation because
-    // the syntax of e.g. MV3 is still evolving. We don't want to make the whole
-    // plugin useless by blocking the whole compilation due to an obsolete validation.
-    if (!this.skipManifestValidation) {
-      await manifestUtils.validate(manifest)
-    }
-
-    // Add client
-    if (this.autoreload && this.isWatching) {
-      const result = await manifestUtils.addBackgroundscript(manifest, 'webextension-toolbox/client.js', compilation.options.context)
-      manifest = result.manifest
-      if (result.backgroundPagePath) {
-        compilation.emitAsset(result.backgroundPagePath, new this.sources.RawSource(result.backgroundPageStr))
+    if (this.manifestChanged) {
+      // Load manifest
+      const manifestPath = path.join(compilation.options.context, manifestName)
+      const manifestBuffer = await this.readFile(manifestPath)
+      let manifest
+      // Convert to JSON
+      try {
+        manifest = JSON.parse(manifestBuffer)
+      } catch (error) {
+        throw new Error(`Could not parse ${manifestName}`)
       }
-    }
 
-    // Create webpack file entry
-    const manifestStr = JSON.stringify(manifest, null, 2)
-    compilation.emitAsset('manifest.json', new this.sources.RawSource(manifestStr))
+      manifest = {
+            ...this.manifestDefaults,
+        ...manifest
+      }
+
+      // Tranform __chrome__key -> key
+      manifest = manifestUtils.transformVendorKeys(manifest, this.vendor)
+
+      // Validate manifest.json syntax
+      // The plugin offers an option to skip the validation because
+      // the syntax of e.g. MV3 is still evolving. We don't want to make the whole
+      // plugin useless by blocking the whole compilation due to an obsolete validation.
+      if (!this.skipManifestValidation) {
+        await manifestUtils.validate(manifest)
+      }
+
+      // Add client
+      if (this.autoreload && this.isWatching) {
+        const result = await manifestUtils.addBackgroundscript(manifest, 'webextension-toolbox/client.js', compilation.options.context)
+        manifest = result.manifest
+        if (result.backgroundPagePath) {
+          compilation.emitAsset(result.backgroundPagePath, new this.sources.RawSource(result.backgroundPageStr))
+        }
+      }
+
+      // Create webpack file entry
+      const manifestStr = JSON.stringify(manifest, null, 2)
+      compilation.emitAsset(manifestName, new this.sources.RawSource(manifestStr))
+    }
   }
 
   /**
@@ -246,23 +290,8 @@ class WebextensionPlugin {
    *
    * @param {Object} compilation
    */
-  extractChangedFiles ({ fileSystemInfo, options }) {
-    const changedFiles = new Map()
-
-    // Compare file timestamps with last compilation
-    for (const [watchfile, timestamp] of fileSystemInfo._fileTimestamps.entries()) {
-      const isFile = Boolean(path.extname(watchfile))
-      if (isFile && (this.prevFileSystemInfo.get(watchfile) || this.startTime) < (fileSystemInfo._fileTimestamps.get(watchfile) || Infinity)) {
-        changedFiles.set(watchfile, timestamp)
-      }
-    }
-    this.prevFileSystemInfo = fileSystemInfo._fileTimestamps
-
-    // Remove context path
-    const contextRegex = new RegExp('^' + options.context.replace('/', '\\/') + '\\/')
-    return Array
-      .from(changedFiles.keys())
-      .map(filePath => filePath.replace(contextRegex, ''))
+  extractChangedFiles ({ emittedAssets }) {
+    return emittedAssets ? Array.from(emittedAssets) : []
   }
 }
 
