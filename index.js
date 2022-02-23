@@ -233,7 +233,7 @@ class WebextensionPlugin {
       }
 
       manifest = {
-            ...this.manifestDefaults,
+        ...this.manifestDefaults,
         ...manifest
       }
 
