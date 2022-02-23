@@ -16,7 +16,8 @@ class WebextensionPlugin {
     autoreload = true,
     vendor = 'chrome',
     manifestDefaults = {},
-    quiet = false
+    quiet = false,
+    skipManifestValidation = false
   } = {}) {
     // Apply Settings
     this.port = port
@@ -26,6 +27,7 @@ class WebextensionPlugin {
     this.vendor = vendor
     this.manifestDefaults = manifestDefaults
     this.quiet = quiet
+    this.skipManifestValidation = skipManifestValidation
 
     // Set some defaults
     this.server = null
@@ -231,15 +233,20 @@ class WebextensionPlugin {
       }
 
       manifest = {
-        ...this.manifestDefaults,
+            ...this.manifestDefaults,
         ...manifest
       }
 
       // Tranform __chrome__key -> key
       manifest = manifestUtils.transformVendorKeys(manifest, this.vendor)
 
-      // Validate
-      await manifestUtils.validate(manifest)
+      // Validate manifest.json syntax
+      // The plugin offers an option to skip the validation because
+      // the syntax of e.g. MV3 is still evolving. We don't want to make the whole
+      // plugin useless by blocking the whole compilation due to an obsolete validation.
+      if (!this.skipManifestValidation) {
+        await manifestUtils.validate(manifest)
+      }
 
       // Add client
       if (this.autoreload && this.isWatching) {
