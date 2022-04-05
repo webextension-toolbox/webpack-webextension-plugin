@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "lib": ["es5", "es2015.promise", "dom", "es2015"],
+    "target": "es5",
+    "outDir": "../../dist",
+    "module": "es2015",
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["**/*.ts"]
+}
