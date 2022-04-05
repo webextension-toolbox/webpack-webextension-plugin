@@ -2,9 +2,8 @@
 
 # Webpack WebExtension Plugin
 
-[![npm package](https://badge.fury.io/js/webpack-webextension-plugin.svg)](https://www.npmjs.com/package/webpack-webextension-plugin)
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![license](https://img.shields.io/npm/l/webpack-webextension-plugin.svg)](https://github.com/webextension-toolbox/webpack-webextension-plugin/blob/master/LICENSE)
+[![npm package](https://badge.fury.io/js/@webextension-toolbox%2Fwebpack-webextension-plugin.svg)](https://www.npmjs.com/package/webpack-webextension-plugin)
+[![license](https://img.shields.io/npm/l/@webextension-toolbox%2Fwebpack-webextension-plugin.svg)](https://github.com/webextension-toolbox/webpack-webextension-plugin/blob/master/LICENSE)
 
 Webpack plugin that compiles web-extension `manifest.json` files and adds smart auto reload.
 
@@ -17,7 +16,7 @@ Webpack plugin that compiles web-extension `manifest.json` files and adds smart 
 ## Install
 
 ```bash
-$ npm i webpack-webextension-plugin
+$ npm i @webextension-toolbox/webextension-toolbox
 ```
 
 ## Usage
