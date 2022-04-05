@@ -1,8 +1,4 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "yaml.schemas": {
-    "file:///Users/andrewnagy/.vscode/extensions/atlassian.atlascode-2.10.11/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml",
-    "https://json.schemastore.org/github-action.json": "file:///Users/andrewnagy/webpack-webextension-plugin/.github/workflows/build.yml"
-  }
+  "editor.formatOnSave": true
 }
