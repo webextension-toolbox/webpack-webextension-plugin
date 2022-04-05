@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Typescript support
 - Service Worker client support
+- Support \_\_ENV\_\_ variable replacement in manifest
 
 ### Changes
 
