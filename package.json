@@ -7,7 +7,15 @@
   "repository": "git@github.com:webextension-tools/webpack-webextension-plugin.git",
   "author": "Henrik Wenz <HaNdTriX@gmail.com> (https://github.com/HaNdTriX)",
   "contributors": [
-    "Andrew Nagy (https://github.com/tm1000)"
+    {
+      "name": "Dávid Balatoni",
+      "email": "balcsida@gmail.com",
+      "url": "https://github.com/balcsida"
+    },
+    {
+      "name": "Andrew Nagy",
+      "url": "https://github.com/tm1000"
+    }
   ],
   "license": "MIT",
   "private": false,
