@@ -1,0 +1,881 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "browser._manifest.ActionManifest": {
+            "properties": {
+                "browser_style": {
+                    "type": "boolean"
+                },
+                "default_area": {
+                    "description": "Defines the location the browserAction will appear by default. The default location is navbar.",
+                    "enum": [
+                        "menupanel",
+                        "navbar",
+                        "personaltoolbar",
+                        "tabstrip"
+                    ],
+                    "type": "string"
+                },
+                "default_icon": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "patternProperties": {
+                                "^[0-9]+$": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "default_popup": {
+                    "type": "string"
+                },
+                "default_title": {
+                    "type": "string"
+                },
+                "theme_icons": {
+                    "description": "Specifies icons to use for dark and light themes",
+                    "items": {
+                        "$ref": "#/definitions/browser._manifest.ThemeIcons"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest.ContentScript": {
+            "description": "Details of the script or CSS to inject. Either the code or the file property must be set, but both may not be set at the same time. Based on InjectDetails, but using underscore rather than camel case naming conventions.",
+            "properties": {
+                "all_frames": {
+                    "description": "If allFrames is `true`, implies that the JavaScript or CSS should be injected into all frames of current page. By default, it's `false` and is only injected into the top frame.",
+                    "type": "boolean"
+                },
+                "css": {
+                    "description": "The list of CSS files to inject",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "exclude_globs": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "exclude_matches": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "include_globs": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "js": {
+                    "description": "The list of JS files to inject",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "match_about_blank": {
+                    "description": "If matchAboutBlank is true, then the code is also injected in about:blank and about:srcdoc frames if your extension has access to its parent document. Code cannot be inserted in top-level about:-frames. By default it is `false`.",
+                    "type": "boolean"
+                },
+                "matches": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "run_at": {
+                    "description": "The soonest that the JavaScript or CSS will be injected into the tab. Defaults to \"document_idle\".",
+                    "enum": [
+                        "document_end",
+                        "document_idle",
+                        "document_start"
+                    ],
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest.FirefoxSpecificProperties": {
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "strict_max_version": {
+                    "type": "string"
+                },
+                "strict_min_version": {
+                    "type": "string"
+                },
+                "update_url": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest.ProtocolHandler": {
+            "description": "Represents a protocol handler definition.",
+            "properties": {
+                "name": {
+                    "description": "A user-readable title string for the protocol handler. This will be displayed to the user in interface objects as needed.",
+                    "type": "string"
+                },
+                "protocol": {
+                    "description": "The protocol the site wishes to handle, specified as a string. For example, you can register to handle SMS text message links by registering to handle the \"sms\" scheme.",
+                    "type": "string"
+                },
+                "uriTemplate": {
+                    "description": "The URL of the handler, as a string. This string should include \"%s\" as a placeholder which will be replaced with the escaped URL of the document to be handled. This URL might be a true URL, or it could be a phone number, email address, or so forth.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest.ThemeExperiment": {
+            "properties": {
+                "colors": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "type": "object"
+                },
+                "images": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "type": "object"
+                },
+                "properties": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "type": "object"
+                },
+                "stylesheet": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest.ThemeIcons": {
+            "properties": {
+                "dark": {
+                    "description": "The dark icon to use for light themes",
+                    "type": "string"
+                },
+                "light": {
+                    "description": "A light icon to use for dark themes",
+                    "type": "string"
+                },
+                "size": {
+                    "description": "The size of the icons",
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestApplications": {
+            "properties": {
+                "gecko": {
+                    "$ref": "#/definitions/browser._manifest.FirefoxSpecificProperties"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestBrowserSpecificSettings": {
+            "properties": {
+                "edge": {
+                    "additionalProperties": {},
+                    "type": "object"
+                },
+                "gecko": {
+                    "$ref": "#/definitions/browser._manifest.FirefoxSpecificProperties"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestChromeSettingsOverrides": {
+            "properties": {
+                "homepage": {
+                    "type": "string"
+                },
+                "search_provider": {
+                    "$ref": "#/definitions/browser._manifest._WebExtensionManifestChromeSettingsOverridesSearchProvider"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestChromeSettingsOverridesSearchProvider": {
+            "properties": {
+                "alternate_urls": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "encoding": {
+                    "description": "Encoding of the search term.",
+                    "type": "string"
+                },
+                "favicon_url": {
+                    "type": "string"
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "image_url_post_params": {
+                    "type": "string"
+                },
+                "instant_url": {
+                    "type": "string"
+                },
+                "instant_url_post_params": {
+                    "type": "string"
+                },
+                "is_default": {
+                    "description": "Sets the default engine to a built-in engine only.",
+                    "type": "boolean"
+                },
+                "keyword": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "name": {
+                    "type": "string"
+                },
+                "params": {
+                    "description": "A list of optional search url parameters. This allows the additon of search url parameters based on how the search is performed in Firefox.",
+                    "items": {
+                        "$ref": "#/definitions/browser._manifest._WebExtensionManifestChromeSettingsOverridesSearchProviderParams"
+                    },
+                    "type": "array"
+                },
+                "prepopulated_id": {
+                    "type": "number"
+                },
+                "search_form": {
+                    "type": "string"
+                },
+                "search_url": {
+                    "type": "string"
+                },
+                "search_url_get_params": {
+                    "description": "GET parameters to the search_url as a query string.",
+                    "type": "string"
+                },
+                "search_url_post_params": {
+                    "description": "POST parameters to the search_url as a query string.",
+                    "type": "string"
+                },
+                "suggest_url": {
+                    "type": "string"
+                },
+                "suggest_url_get_params": {
+                    "description": "GET parameters to the suggest_url as a query string.",
+                    "type": "string"
+                },
+                "suggest_url_post_params": {
+                    "description": "POST parameters to the suggest_url as a query string.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestChromeSettingsOverridesSearchProviderParams": {
+            "properties": {
+                "condition": {
+                    "description": "The type of param can be either \"purpose\" or \"pref\".",
+                    "enum": [
+                        "pref",
+                        "purpose"
+                    ],
+                    "type": "string"
+                },
+                "name": {
+                    "description": "A url parameter name",
+                    "type": "string"
+                },
+                "pref": {
+                    "description": "The preference to retrieve the value from.",
+                    "type": "string"
+                },
+                "purpose": {
+                    "description": "The context that initiates a search, required if condition is \"purpose\".",
+                    "enum": [
+                        "contextmenu",
+                        "homepage",
+                        "keyword",
+                        "newtab",
+                        "searchbar"
+                    ],
+                    "type": "string"
+                },
+                "value": {
+                    "description": "A url parameter value.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestChromeUrlOverrides": {
+            "properties": {
+                "bookmarks": {
+                    "type": "string"
+                },
+                "history": {
+                    "type": "string"
+                },
+                "newtab": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestCommands": {
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "suggested_key": {
+                    "$ref": "#/definitions/browser._manifest._WebExtensionManifestCommandsSuggestedKey"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestCommandsSuggestedKey": {
+            "properties": {
+                "additionalProperties": {
+                    "type": "string"
+                },
+                "android": {
+                    "type": "string"
+                },
+                "chromeos": {
+                    "type": "string"
+                },
+                "default": {
+                    "type": "string"
+                },
+                "ios": {
+                    "type": "string"
+                },
+                "linux": {
+                    "type": "string"
+                },
+                "mac": {
+                    "type": "string"
+                },
+                "windows": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestDeveloper": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestOmnibox": {
+            "properties": {
+                "keyword": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestOptionsUi": {
+            "properties": {
+                "browser_style": {
+                    "type": "boolean"
+                },
+                "chrome_style": {
+                    "type": "boolean"
+                },
+                "open_in_tab": {
+                    "type": "boolean"
+                },
+                "page": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestPageAction": {
+            "properties": {
+                "browser_style": {
+                    "type": "boolean"
+                },
+                "default_icon": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "patternProperties": {
+                                "^[0-9]+$": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "default_popup": {
+                    "type": "string"
+                },
+                "default_title": {
+                    "type": "string"
+                },
+                "hide_matches": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "pinned": {
+                    "type": "boolean"
+                },
+                "show_matches": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestSidebarAction": {
+            "properties": {
+                "browser_style": {
+                    "type": "boolean"
+                },
+                "default_icon": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "patternProperties": {
+                                "^[0-9]+$": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "default_panel": {
+                    "type": "string"
+                },
+                "default_title": {
+                    "type": "string"
+                },
+                "open_at_install": {
+                    "description": "Whether or not the sidebar is opened at install. Default is `true`.",
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestTelemetry": {
+            "properties": {
+                "ping_type": {
+                    "type": "string"
+                },
+                "pioneer_id": {
+                    "type": "boolean"
+                },
+                "public_key": {
+                    "$ref": "#/definitions/browser._manifest._WebExtensionManifestTelemetryPublicKey"
+                },
+                "schemaNamespace": {
+                    "type": "string"
+                },
+                "study_name": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestTelemetryPublicKey": {
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "key": {
+                    "$ref": "#/definitions/browser._manifest._WebExtensionManifestTelemetryPublicKeyKey"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestTelemetryPublicKeyKey": {
+            "properties": {
+                "crv": {
+                    "type": "string"
+                },
+                "kty": {
+                    "type": "string"
+                },
+                "x": {
+                    "type": "string"
+                },
+                "y": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestUserScripts": {
+            "properties": {
+                "api_script": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser.experiments.ExperimentAPI": {
+            "properties": {
+                "child": {
+                    "$ref": "#/definitions/browser.experiments._ExperimentAPIChild"
+                },
+                "parent": {
+                    "$ref": "#/definitions/browser.experiments._ExperimentAPIParent"
+                },
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser.experiments._ExperimentAPIChild": {
+            "properties": {
+                "paths": {
+                    "items": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "type": "array"
+                },
+                "scopes": {
+                    "items": {
+                        "enum": [
+                            "addon_child",
+                            "content_child",
+                            "devtools_child"
+                        ],
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "script": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser.experiments._ExperimentAPIParent": {
+            "properties": {
+                "events": {
+                    "items": {
+                        "enum": [
+                            "startup"
+                        ],
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "paths": {
+                    "items": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "type": "array"
+                },
+                "scopes": {
+                    "items": {
+                        "enum": [
+                            "addon_parent",
+                            "content_parent",
+                            "devtools_parent"
+                        ],
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "script": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "description": "Represents a WebExtension manifest.json file",
+    "properties": {
+        "action": {
+            "$ref": "#/definitions/browser._manifest.ActionManifest",
+            "description": "Needs at least manifest version 3."
+        },
+        "applications": {
+            "$ref": "#/definitions/browser._manifest._WebExtensionManifestApplications"
+        },
+        "author": {
+            "type": "string"
+        },
+        "background": {
+            "anyOf": [
+                {
+                    "properties": {
+                        "page": {
+                            "type": "string"
+                        },
+                        "persistent": {
+                            "type": "boolean"
+                        }
+                    },
+                    "type": "object"
+                },
+                {
+                    "properties": {
+                        "persistent": {
+                            "type": "boolean"
+                        },
+                        "scripts": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "type": "object"
+                },
+                {
+                    "properties": {
+                        "service_worker": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                }
+            ]
+        },
+        "browser_action": {
+            "$ref": "#/definitions/browser._manifest.ActionManifest",
+            "description": "Not supported on manifest versions above 2."
+        },
+        "browser_specific_settings": {
+            "$ref": "#/definitions/browser._manifest._WebExtensionManifestBrowserSpecificSettings"
+        },
+        "chrome_settings_overrides": {
+            "$ref": "#/definitions/browser._manifest._WebExtensionManifestChromeSettingsOverrides"
+        },
+        "chrome_url_overrides": {
+            "$ref": "#/definitions/browser._manifest._WebExtensionManifestChromeUrlOverrides"
+        },
+        "commands": {
+            "additionalProperties": {
+                "$ref": "#/definitions/browser._manifest._WebExtensionManifestCommands"
+            },
+            "type": "object"
+        },
+        "content_scripts": {
+            "items": {
+                "$ref": "#/definitions/browser._manifest.ContentScript"
+            },
+            "type": "array"
+        },
+        "content_security_policy": {
+            "anyOf": [
+                {
+                    "properties": {
+                        "extension_pages": {
+                            "description": "The Content Security Policy used for extension pages.",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "default_locale": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "developer": {
+            "$ref": "#/definitions/browser._manifest._WebExtensionManifestDeveloper"
+        },
+        "devtools_page": {
+            "type": "string"
+        },
+        "experiment_apis": {
+            "additionalProperties": {
+                "$ref": "#/definitions/browser.experiments.ExperimentAPI"
+            },
+            "type": "object"
+        },
+        "hidden": {
+            "type": "boolean"
+        },
+        "homepage_url": {
+            "type": "string"
+        },
+        "host_permissions": {
+            "description": "Needs at least manifest version 3.",
+            "items": {
+                "type": "string"
+            },
+            "type": "array"
+        },
+        "icons": {
+            "additionalProperties": false,
+            "patternProperties": {
+                "^[0-9]+$": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "incognito": {
+            "enum": [
+                "not_allowed",
+                "spanning"
+            ],
+            "type": "string"
+        },
+        "l10n_resources": {
+            "items": {
+                "type": "string"
+            },
+            "type": "array"
+        },
+        "manifest_version": {
+            "type": "number"
+        },
+        "minimum_chrome_version": {
+            "type": "string"
+        },
+        "minimum_opera_version": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "omnibox": {
+            "$ref": "#/definitions/browser._manifest._WebExtensionManifestOmnibox"
+        },
+        "optional_permissions": {
+            "items": {
+                "type": "string"
+            },
+            "type": "array"
+        },
+        "options_ui": {
+            "$ref": "#/definitions/browser._manifest._WebExtensionManifestOptionsUi"
+        },
+        "page_action": {
+            "$ref": "#/definitions/browser._manifest._WebExtensionManifestPageAction"
+        },
+        "permissions": {
+            "items": {
+                "type": "string"
+            },
+            "type": "array"
+        },
+        "protocol_handlers": {
+            "description": "A list of protocol handler definitions.",
+            "items": {
+                "$ref": "#/definitions/browser._manifest.ProtocolHandler"
+            },
+            "type": "array"
+        },
+        "short_name": {
+            "type": "string"
+        },
+        "sidebar_action": {
+            "$ref": "#/definitions/browser._manifest._WebExtensionManifestSidebarAction"
+        },
+        "telemetry": {
+            "$ref": "#/definitions/browser._manifest._WebExtensionManifestTelemetry"
+        },
+        "theme_experiment": {
+            "$ref": "#/definitions/browser._manifest.ThemeExperiment"
+        },
+        "user_scripts": {
+            "$ref": "#/definitions/browser._manifest._WebExtensionManifestUserScripts"
+        },
+        "version": {
+            "type": "string"
+        },
+        "web_accessible_resources": {
+            "anyOf": [
+                {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                {
+                    "items": {
+                        "properties": {
+                            "matches": {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            "resources": {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "type": "array"
+                }
+            ]
+        }
+    },
+    "type": "object"
+}
+
