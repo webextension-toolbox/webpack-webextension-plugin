@@ -39,4 +39,4 @@ jobs:
         with:
           body: ${{ steps.changelog_reader.outputs.changes }}
           tag_name: ${{ steps.get_version.outputs.version }}
-          files: webpack-webextension-plugin-${{ steps.get_version.outputs.version }}.tgz
+          files: webextension-toolbox-webpack-webextension-plugin-${{ steps.get_version.outputs.version }}.tgz
