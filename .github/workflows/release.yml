@@ -7,7 +7,7 @@ on:
       - "*"
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,8 +16,9 @@ jobs:
           node-version: "16"
       - run: npm ci
       - run: npm run lint
+
   create-release:
-    needs: build
+    needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -25,6 +26,7 @@ jobs:
         with:
           node-version: "16"
       - run: npm ci
+      - run: npm run build
       - run: npm pack
       - id: get_version
         uses: battila7/get-version-action@v2

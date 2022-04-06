@@ -7,10 +7,13 @@
 
 Webpack plugin that compiles web-extension `manifest.json` files and adds smart auto reload.
 
+If you are looking for a simple CLI tool that utilizes this checkout [https://github.com/webextension-toolbox/webextension-toolbox](https://github.com/webextension-toolbox/webextension-toolbox)
+
 ## What does it do?
 
 - Autoreload extensions via websockets
 - Use vendor prefixes in manifest properties
+- ENV replacement in manifest values
 - Validates some `manifest.json` fields
 
 ## Install
