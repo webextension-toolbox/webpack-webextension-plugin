@@ -7,7 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.2] - 2022-04-06
+
+### Changes
+
+- Package is now scoped and as such is now listed on GPR.
+
 ## [2.0.1] - 2022-04-06
+### Changes
+
+- Publish fixes for github
+
+## [2.0.0] - 2022-04-05
 
 ### Added
 
@@ -17,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
+- Please note package changed from `webpack-webextension-plugin` to `@webextension-toolbox/webpack-webextension-plugin`
 - Remove JOI and export types for manifest validation utilizing JSON Schema
 - Send error from Manifest Validator to webpack instead of throwing an exception
 - Stop using Standard and implement ESLint and Prettier instead
