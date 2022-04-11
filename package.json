@@ -1,6 +1,6 @@
 {
   "name": "@webextension-toolbox/webpack-webextension-plugin",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Webpack plugin that compiles web-extension manifest.json files and adds smart auto reload",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -30,6 +30,7 @@
     "generate-manifest-schema": "typescript-json-schema ./src/plugin/tsconfig.json browser._manifest.WebExtensionManifest > ./src/plugin/manifest.schema.json"
   },
   "dependencies": {
+    "@types/chrome": "^0.0.181",
     "ajv": "^6.12.6",
     "mustache": "^4.2.0",
     "ws": "8.5.0"

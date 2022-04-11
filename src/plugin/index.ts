@@ -1,12 +1,13 @@
 import path from "path";
 import { promisify } from "util";
 import WebSocket from "ws";
-import { Compiler, Compilation, Stats, WebpackError } from "webpack";
+import webpack, { Compiler, Compilation, Stats } from "webpack";
 import Mustache from "mustache";
 import Ajv from "ajv";
 import vendors from "./vendors.json";
 import manifestSchema from "./manifest.schema.json";
 
+const { WebpackError } = webpack;
 interface ManifestObject {
   [key: string]: any;
 }

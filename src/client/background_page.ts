@@ -3,7 +3,8 @@ interface Notification {
   changedFiles: string[];
 }
 
-(function webextensionAutoReload({ WebSocket, browser }) {
+(function webextensionAutoReload({ WebSocket, browser = null, chrome = null }) {
+  const realBrowser = browser || chrome;
   const host = "{{host}}";
   const port = "{{port}}";
   const reconnectTime = parseInt("{{reconnectTime}}", 10);
@@ -28,13 +29,13 @@ interface Notification {
    * in the manifest.json.
    */
   function getManifestFileDeps() {
-    const manifest = browser.runtime.getManifest();
+    const manifest = realBrowser.runtime.getManifest();
     const manifestStr = JSON.stringify(manifest);
     return manifestStr.match(fileRegex) || [];
   }
 
   /**
-   * We don't like reopening our devtools after a browser.runtime.reload.
+   * We don't like reopening our devtools after a realBrowser.runtime.reload.
    * Since it is not possible to open them programatically, we
    * need to reduce the runtime.reloads.
    * This function prefers softer reloads, by comparing
@@ -42,37 +43,43 @@ interface Notification {
    *
    */
   function smartReloadExtension(changedFiles: string[]): void {
-    log("Reloading ...");
+    log("Reloading...");
 
     // Full reload if we have no changed files (dump reload!)
     if (!changedFiles) {
-      browser.runtime.reload();
+      log("Full Reload (no changed files)");
+      realBrowser.runtime.reload();
       return;
     }
 
     // Full reload manifest changed
     if (changedFiles.some((file) => file === "manifest.json")) {
-      browser.runtime.reload();
+      log("Full Reload (manifest.json changed)");
+      realBrowser.runtime.reload();
       return;
     }
 
     // Full reload if _locales changed
     if (changedFiles.some((file) => /^_locales\//.test(file))) {
-      browser.runtime.reload();
+      log("Full Reload (locales changed)");
+      realBrowser.runtime.reload();
       return;
     }
 
     // Full reload if manifest deps changed
     if (getManifestFileDeps().some((file) => changedFiles.includes(file))) {
-      browser.runtime.reload();
+      log("Full Reload (manifest deps changed)");
+      realBrowser.runtime.reload();
       return;
     }
 
     // Reload current tab (smart reload)
-    browser.tabs.reload();
+    realBrowser.tabs.reload();
 
     // Reload other extension views
-    browser.extension.getViews().map((_window) => _window.location.reload());
+    realBrowser.extension
+      .getViews()
+      .map((_window) => _window.location.reload());
   }
 
   /**
