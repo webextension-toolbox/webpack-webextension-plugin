@@ -21,10 +21,28 @@ module.exports = {
         ignorePropertyModificationsFor: ["manifest", "previousValue"],
       },
     ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        js: "never",
+        jsx: "never",
+        ts: "never",
+        tsx: "never",
+      },
+    ],
   },
   globals: {
     browser: "readonly",
     chrome: "readonly",
     NodeJS: true,
+  },
+  settings: {
+    "import/resolver": {
+      node: {
+        extensions: [".ts", ".tsx"],
+        moduleDirectory: ["src", "node_modules"],
+      },
+    },
   },
 };

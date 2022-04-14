@@ -6,7 +6,6 @@ import Mustache from "mustache";
 import Ajv from "ajv";
 import fs from "fs/promises";
 import { constants, readFileSync } from "fs";
-import { ConcatSource } from "webpack-sources";
 import vendors from "./vendors.json";
 import manifestSchema from "./manifest.schema.json";
 
