@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Offical Support for hooks in service worker to reload extension during
+- Official Support for hooks in service worker to reload extension during development
 
 ## [2.0.4] - 2022-04-11
 
