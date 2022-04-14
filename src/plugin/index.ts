@@ -4,10 +4,12 @@ import WebSocket from "ws";
 import webpack, { Compiler, Compilation, Stats } from "webpack";
 import Mustache from "mustache";
 import Ajv from "ajv";
-import fs from "fs/promises";
-import { constants, readFileSync } from "fs";
+import fs, { constants, readFileSync } from "fs";
 import vendors from "./vendors.json";
 import manifestSchema from "./manifest.schema.json";
+
+// TODO: Remove when we drop support for Node 12, See https://github.com/nodejs/node/issues/35740
+const { access } = fs.promises;
 
 const { WebpackError } = webpack;
 interface ManifestObject {
@@ -539,6 +541,10 @@ export default class WebextensionPlugin {
 
   /**
    * Add Background Script to reload extension in dev mode
+   *
+   * @param manifest browser._manifest.WebExtensionManifest
+   * @param compilation Compilation
+   * @returns Promise<browser._manifest.WebExtensionManifest>
    */
   async addBackgroundscript(
     manifest: browser._manifest.WebExtensionManifest,
@@ -598,15 +604,26 @@ export default class WebextensionPlugin {
     return manifest;
   }
 
-  async fileExists(file: string) {
+  /**
+   * Check if file exists
+   * @param file
+   * @returns Promise<boolean>
+   */
+  async fileExists(file: string): Promise<boolean> {
     try {
-      await fs.access(file, constants.F_OK);
+      await access(file, constants.F_OK);
       return true;
     } catch {
       return false;
     }
   }
 
+  /**
+   * Get the true filename (used for Typescript detections)
+   * @param context
+   * @param relative
+   * @returns Promise<string>
+   */
   async getTrueFilename(context: string, relative: string): Promise<string> {
     const { name, dir } = path.parse(relative);
     if (await this.fileExists(path.join(context, dir, `${name}.js`))) {

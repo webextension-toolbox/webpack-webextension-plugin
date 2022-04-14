@@ -7,7 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.1] - 2022-04-14
+
+### Fixed
+
+- Fixed issues with nodejs 12 and promises
+
 ## [2.1.0] - 2022-04-14
+
+### Added
+
+- Offical Support for hooks in service worker to reload extension during
 
 ## [2.0.4] - 2022-04-11
 
@@ -33,11 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Publish fixes for github
 
 ## [2.0.0] - 2022-04-05
-
-### Added
-
-- Offical Support for hooks in service worker to reload extension during development
-
 ### Added
 
 - Typescript support
