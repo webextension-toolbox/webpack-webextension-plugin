@@ -24,6 +24,7 @@ module.exports = {
   },
   globals: {
     browser: "readonly",
+    chrome: "readonly",
     NodeJS: true,
   },
 };

@@ -4,6 +4,9 @@ import WebSocket from "ws";
 import webpack, { Compiler, Compilation, Stats } from "webpack";
 import Mustache from "mustache";
 import Ajv from "ajv";
+import fs from "fs/promises";
+import { constants, readFileSync } from "fs";
+import { ConcatSource } from "webpack-sources";
 import vendors from "./vendors.json";
 import manifestSchema from "./manifest.schema.json";
 
@@ -144,7 +147,46 @@ export default class WebextensionPlugin {
    * @param {Object} compilation
    */
   compilation(compilation: Compilation) {
+    this.injectClient(compilation);
     this.keepFiles(compilation);
+  }
+
+  /**
+   * Inject Client into the current server_worker
+   * @param compilation
+   */
+  injectClient(compilation: Compilation) {
+    if (this.autoreload && this.isWatching && !this.clientAdded) {
+      const { name } = this.constructor;
+      compilation.hooks.processAssets.tap(
+        {
+          name,
+          stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONS,
+        },
+        (assets) => {
+          if (assets["scripts/service_worker.js"]) {
+            const source = readFileSync(
+              path.resolve(__dirname, "service_worker.js"),
+              {
+                encoding: "utf8",
+              }
+            );
+
+            const replacedSource = Mustache.render(source.toString(), {
+              port: this.port,
+              host: this.host,
+              reconnectTime: this.reconnectTime,
+            });
+
+            compilation.updateAsset(
+              "scripts/service_worker.js",
+              (old) =>
+                new this.sources.RawSource(`${replacedSource}\n${old.source()}`)
+            );
+          }
+        }
+      );
+    }
   }
 
   /**
@@ -153,10 +195,7 @@ export default class WebextensionPlugin {
    * @param compilation Compilation
    */
   make(compilation: Compilation) {
-    return Promise.all([
-      this.addClient(compilation),
-      this.addManifest(compilation),
-    ]).then(() => {});
+    return Promise.all([this.addManifest(compilation)]).then(() => {});
   }
 
   /**
@@ -511,6 +550,19 @@ export default class WebextensionPlugin {
       return manifest;
     }
 
+    this.compileClient();
+
+    if ("service_worker" in manifest.background) {
+      const { context } = compilation.options;
+      if (!context) {
+        // TODO: log this as an error
+        return manifest;
+      }
+      return manifest;
+    }
+
+    this.addClient(compilation);
+
     if ("page" in manifest.background) {
       const { context } = compilation.options;
       if (!context) {
@@ -536,33 +588,6 @@ export default class WebextensionPlugin {
       return manifest;
     }
 
-    if ("service_worker" in manifest.background) {
-      const { context } = compilation.options;
-      if (!context) {
-        // TODO: log this as an error
-        return manifest;
-      }
-
-      const workerPath = path.join(context, manifest.background.service_worker);
-      const workerString = await this.readFile(workerPath, {
-        encoding: "utf8",
-      });
-
-      const clientPath = path.resolve(__dirname, "service_worker.js");
-      const clientString = await this.readFile(clientPath, {
-        encoding: "utf8",
-      });
-
-      const newWorkerString = `${clientString}\n${workerString}`;
-
-      compilation.emitAsset(
-        manifest.background.service_worker,
-        new this.sources.RawSource(newWorkerString)
-      );
-
-      return manifest;
-    }
-
     if ("scripts" in manifest.background) {
       // Insert Script
       manifest.background.scripts.push(this.backgroundPagePathDefault);
@@ -572,5 +597,25 @@ export default class WebextensionPlugin {
     // Insert Script
     manifest.background = { scripts: [this.backgroundPagePathDefault] };
     return manifest;
+  }
+
+  async fileExists(file: string) {
+    try {
+      await fs.access(file, constants.F_OK);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async getTrueFilename(context: string, relative: string): Promise<string> {
+    const { name, dir } = path.parse(relative);
+    if (await this.fileExists(path.join(context, dir, `${name}.js`))) {
+      return path.join(dir, `${name}.js`);
+    }
+    if (await this.fileExists(path.join(context, dir, `${name}.ts`))) {
+      return path.join(dir, `${name}.ts`);
+    }
+    return path.join(dir, `${name}.js`);
   }
 }
