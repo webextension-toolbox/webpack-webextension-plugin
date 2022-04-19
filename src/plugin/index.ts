@@ -497,7 +497,7 @@ export default class WebextensionPlugin {
   transformManifestValuesFromENV(
     manifest: browser._manifest.WebExtensionManifest
   ): browser._manifest.WebExtensionManifest {
-    const valueRegExp = /^__(.*)__$/;
+    const valueRegExp = /^__(?!MSG_)(.*)__$/;
 
     const replace = (value: string): string => {
       const match = value.match(valueRegExp);
