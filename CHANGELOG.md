@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.2] - 2022-04-19
+
+### Fixed
+
+- Fixes #167 Localized strings are now being removed from manifest.json (Thanks @rthaut)
+
 ## [2.1.1] - 2022-04-14
 
 ### Fixed
