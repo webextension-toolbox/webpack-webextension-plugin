@@ -148,16 +148,32 @@ export default class WebextensionPlugin {
    * @param {Object} compilation
    */
   compilation(compilation: Compilation) {
-    this.injectClient(compilation);
+    this.injectServiceWorkerClient(compilation);
     this.keepFiles(compilation);
   }
 
   /**
-   * Inject Client into the current server_worker
+   * Inject Service Worker Client into the current server_worker
    * @param compilation
    */
-  injectClient(compilation: Compilation) {
-    if (this.autoreload && this.isWatching && !this.clientAdded) {
+  injectServiceWorkerClient(compilation: Compilation) {
+    // Locate the service worker
+    const manifestPath = path.join(
+      compilation.options.context ?? "",
+      this.manifestNameDefault
+    );
+    const manifestBuffer = readFileSync(manifestPath, {
+      encoding: "utf8",
+    });
+    const manifest = JSON.parse(manifestBuffer);
+    const serviceWorker = manifest?.background?.service_worker ?? null;
+
+    if (
+      serviceWorker !== null &&
+      this.autoreload &&
+      this.isWatching &&
+      !this.clientAdded
+    ) {
       const { name } = this.constructor;
       compilation.hooks.processAssets.tap(
         {
@@ -165,7 +181,7 @@ export default class WebextensionPlugin {
           stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONS,
         },
         (assets) => {
-          if (assets["scripts/service_worker.js"]) {
+          if (assets[serviceWorker]) {
             const source = readFileSync(
               path.resolve(__dirname, "service_worker.js"),
               {
@@ -180,7 +196,7 @@ export default class WebextensionPlugin {
             });
 
             compilation.updateAsset(
-              "scripts/service_worker.js",
+              serviceWorker,
               (old) =>
                 new this.sources.RawSource(`${replacedSource}\n${old.source()}`)
             );

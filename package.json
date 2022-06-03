@@ -1,6 +1,6 @@
 {
   "name": "@webextension-toolbox/webpack-webextension-plugin",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Webpack plugin that compiles web-extension manifest.json files and adds smart auto reload",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

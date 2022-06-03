@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.3] - 2022-06-03
+
+### Fixed
+
+- Fixes #204 Hardcoded service_worker file breaks when using custom service_worker (Thanks @j1mie)
+
 ## [2.1.2] - 2022-04-19
 
 ### Fixed
