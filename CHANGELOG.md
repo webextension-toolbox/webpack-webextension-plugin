@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Updated Dependencies
+### Removed
+- Support for NodeJS 12.x
+
 ## [2.1.3] - 2022-06-03
 
 ### Fixed
@@ -39,18 +44,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.3] - 2022-04-06
 
-### Changes
+### Changed
 
 - Fix repo url in package.json for GPR
 
 ## [2.0.2] - 2022-04-06
 
-### Changes
+### Changed
 
 - Package is now scoped and as such is now listed on GPR.
 
 ## [2.0.1] - 2022-04-06
-### Changes
+### Changed
 
 - Publish fixes for github
 
@@ -61,7 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Service Worker client support
 - Support \_\_ENV\_\_ variable replacement in manifest
 
-### Changes
+### Changed
 
 - Please note package changed from `webpack-webextension-plugin` to `@webextension-toolbox/webpack-webextension-plugin`
 - Remove JOI and export types for manifest validation utilizing JSON Schema
