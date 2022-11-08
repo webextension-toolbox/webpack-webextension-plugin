@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@types/chrome": "^0.0.200",
-    "ajv": "^8.11.0",
+    "ajv": "^6.12.6",
     "mustache": "^4.2.0",
     "webpack-sources": "^3.2.3",
     "ws": "8.11.0"
