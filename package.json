@@ -34,7 +34,7 @@
     "ajv": "^6.12.6",
     "mustache": "^4.2.0",
     "webpack-sources": "^3.2.3",
-    "ws": "8.10.0"
+    "ws": "8.11.0"
   },
   "devDependencies": {
     "@tsconfig/node14": "^1.0.3",
