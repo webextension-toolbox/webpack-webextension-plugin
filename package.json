@@ -30,7 +30,7 @@
     "generate-manifest-schema": "typescript-json-schema ./src/plugin/tsconfig.json browser._manifest.WebExtensionManifest > ./src/plugin/manifest.schema.json"
   },
   "dependencies": {
-    "@types/chrome": "^0.0.200",
+    "@types/chrome": "^0.0.210",
     "ajv": "^6.12.6",
     "mustache": "^4.2.0",
     "webpack-sources": "^3.2.3",
