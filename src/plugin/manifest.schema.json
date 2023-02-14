@@ -48,6 +48,14 @@
             },
             "type": "object"
         },
+        "browser._manifest.BrowserSpecificSettings": {
+            "properties": {
+                "gecko": {
+                    "$ref": "#/definitions/browser._manifest.FirefoxSpecificProperties"
+                }
+            },
+            "type": "object"
+        },
         "browser._manifest.ContentScript": {
             "description": "Details of the script or CSS to inject. Either the code or the file property must be set, but both may not be set at the same time. Based on InjectDetails, but using underscore rather than camel case naming conventions.",
             "properties": {
@@ -183,26 +191,6 @@
                 "size": {
                     "description": "The size of the icons",
                     "type": "number"
-                }
-            },
-            "type": "object"
-        },
-        "browser._manifest._WebExtensionManifestApplications": {
-            "properties": {
-                "gecko": {
-                    "$ref": "#/definitions/browser._manifest.FirefoxSpecificProperties"
-                }
-            },
-            "type": "object"
-        },
-        "browser._manifest._WebExtensionManifestBrowserSpecificSettings": {
-            "properties": {
-                "edge": {
-                    "additionalProperties": {},
-                    "type": "object"
-                },
-                "gecko": {
-                    "$ref": "#/definitions/browser._manifest.FirefoxSpecificProperties"
                 }
             },
             "type": "object"
@@ -393,6 +381,35 @@
             },
             "type": "object"
         },
+        "browser._manifest._WebExtensionManifestDeclarativeNetRequest": {
+            "description": "Needs at least manifest version 3.",
+            "properties": {
+                "rule_resources": {
+                    "items": {
+                        "$ref": "#/definitions/browser._manifest._WebExtensionManifestDeclarativeNetRequestRuleResources"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest._WebExtensionManifestDeclarativeNetRequestRuleResources": {
+            "properties": {
+                "enabled": {
+                    "description": "Whether the ruleset is enabled by default.",
+                    "type": "boolean"
+                },
+                "id": {
+                    "description": "A non-empty string uniquely identifying the ruleset. IDs beginning with '_' are reserved for internal use.",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "The path of the JSON ruleset relative to the extension directory.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "browser._manifest._WebExtensionManifestDeveloper": {
             "properties": {
                 "name": {
@@ -557,12 +574,29 @@
             "type": "object"
         },
         "browser._manifest._WebExtensionManifestUserScripts": {
+            "description": "Not supported on manifest versions above 2.",
             "properties": {
                 "api_script": {
                     "type": "string"
                 }
             },
             "type": "object"
+        },
+        "browser.experiments.APIChildScope": {
+            "enum": [
+                "addon_child",
+                "content_child",
+                "devtools_child"
+            ],
+            "type": "string"
+        },
+        "browser.experiments.APIParentScope": {
+            "enum": [
+                "addon_parent",
+                "content_parent",
+                "devtools_parent"
+            ],
+            "type": "string"
         },
         "browser.experiments.ExperimentAPI": {
             "properties": {
@@ -591,12 +625,7 @@
                 },
                 "scopes": {
                     "items": {
-                        "enum": [
-                            "addon_child",
-                            "content_child",
-                            "devtools_child"
-                        ],
-                        "type": "string"
+                        "$ref": "#/definitions/browser.experiments.APIChildScope"
                     },
                     "type": "array"
                 },
@@ -628,12 +657,7 @@
                 },
                 "scopes": {
                     "items": {
-                        "enum": [
-                            "addon_parent",
-                            "content_parent",
-                            "devtools_parent"
-                        ],
-                        "type": "string"
+                        "$ref": "#/definitions/browser.experiments.APIParentScope"
                     },
                     "type": "array"
                 },
@@ -651,7 +675,8 @@
             "description": "Needs at least manifest version 3."
         },
         "applications": {
-            "$ref": "#/definitions/browser._manifest._WebExtensionManifestApplications"
+            "$ref": "#/definitions/browser._manifest.BrowserSpecificSettings",
+            "description": "The applications property is deprecated, please use 'browser_specific_settings'\nNot supported on manifest versions above 2."
         },
         "author": {
             "type": "string"
@@ -664,6 +689,7 @@
                             "type": "string"
                         },
                         "persistent": {
+                            "description": "Not supported on manifest versions above 2.",
                             "type": "boolean"
                         }
                     },
@@ -672,6 +698,7 @@
                 {
                     "properties": {
                         "persistent": {
+                            "description": "Not supported on manifest versions above 2.",
                             "type": "boolean"
                         },
                         "scripts": {
@@ -698,7 +725,7 @@
             "description": "Not supported on manifest versions above 2."
         },
         "browser_specific_settings": {
-            "$ref": "#/definitions/browser._manifest._WebExtensionManifestBrowserSpecificSettings"
+            "$ref": "#/definitions/browser._manifest.BrowserSpecificSettings"
         },
         "chrome_settings_overrides": {
             "$ref": "#/definitions/browser._manifest._WebExtensionManifestChromeSettingsOverrides"
@@ -734,6 +761,10 @@
                 }
             ]
         },
+        "declarative_net_request": {
+            "$ref": "#/definitions/browser._manifest._WebExtensionManifestDeclarativeNetRequest",
+            "description": "Needs at least manifest version 3."
+        },
         "default_locale": {
             "type": "string"
         },
@@ -751,6 +782,9 @@
                 "$ref": "#/definitions/browser.experiments.ExperimentAPI"
             },
             "type": "object"
+        },
+        "granted_host_permissions": {
+            "type": "boolean"
         },
         "hidden": {
             "type": "boolean"
@@ -780,6 +814,12 @@
                 "spanning"
             ],
             "type": "string"
+        },
+        "install_origins": {
+            "items": {
+                "type": "string"
+            },
+            "type": "array"
         },
         "l10n_resources": {
             "items": {
@@ -840,7 +880,8 @@
             "$ref": "#/definitions/browser._manifest.ThemeExperiment"
         },
         "user_scripts": {
-            "$ref": "#/definitions/browser._manifest._WebExtensionManifestUserScripts"
+            "$ref": "#/definitions/browser._manifest._WebExtensionManifestUserScripts",
+            "description": "Not supported on manifest versions above 2."
         },
         "version": {
             "type": "string"
@@ -856,6 +897,12 @@
                 {
                     "items": {
                         "properties": {
+                            "extension_ids": {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
                             "matches": {
                                 "items": {
                                     "type": "string"
