@@ -1,0 +1,785 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "chrome.declarativeContent.PageStateMatcherProperties": {
+            "properties": {
+                "css": {
+                    "description": "Optional. Matches if all of the CSS selectors in the array match displayed elements in a frame with the same origin as the page's main frame. All selectors in this array must be compound selectors to speed up matching. Note that listing hundreds of CSS selectors or CSS selectors that match hundreds of times per page can still slow down web sites.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "isBookmarked": {
+                    "description": "Optional.\nSince Chrome 45. Warning: this is the current Beta channel. More information available on the API documentation pages.\nMatches if the bookmarked state of the page is equal to the specified value. Requres the bookmarks permission.",
+                    "type": "boolean"
+                },
+                "pageUrl": {
+                    "$ref": "#/definitions/chrome.declarativeContent.PageStateUrlDetails",
+                    "description": "Optional. Filters URLs for various criteria. See event filtering. All criteria are case sensitive."
+                }
+            },
+            "type": "object"
+        },
+        "chrome.declarativeContent.PageStateUrlDetails": {
+            "properties": {
+                "hostContains": {
+                    "description": "Optional. Matches if the host name of the URL contains a specified string. To test whether a host name component has a prefix 'foo', use hostContains: '.foo'. This matches 'www.foobar.com' and 'foo.com', because an implicit dot is added at the beginning of the host name. Similarly, hostContains can be used to match against component suffix ('foo.') and to exactly match against components ('.foo.'). Suffix- and exact-matching for the last components need to be done separately using hostSuffix, because no implicit dot is added at the end of the host name.",
+                    "type": "string"
+                },
+                "hostEquals": {
+                    "description": "Optional. Matches if the host name of the URL is equal to a specified string.",
+                    "type": "string"
+                },
+                "hostPrefix": {
+                    "description": "Optional. Matches if the host name of the URL starts with a specified string.",
+                    "type": "string"
+                },
+                "hostSuffix": {
+                    "description": "Optional. Matches if the host name of the URL ends with a specified string.",
+                    "type": "string"
+                },
+                "originAndPathMatches": {
+                    "description": "Optional. Matches if the URL without query segment and fragment identifier matches a specified regular expression. Port numbers are stripped from the URL if they match the default port number. The regular expressions use the RE2 syntax.",
+                    "type": "string"
+                },
+                "pathContains": {
+                    "description": "Optional. Matches if the path segment of the URL contains a specified string.",
+                    "type": "string"
+                },
+                "pathEquals": {
+                    "description": "Optional. Matches if the path segment of the URL is equal to a specified string.",
+                    "type": "string"
+                },
+                "pathPrefix": {
+                    "description": "Optional. Matches if the path segment of the URL starts with a specified string.",
+                    "type": "string"
+                },
+                "pathSuffix": {
+                    "description": "Optional. Matches if the path segment of the URL ends with a specified string.",
+                    "type": "string"
+                },
+                "ports": {
+                    "description": "Optional. Matches if the port of the URL is contained in any of the specified port lists. For example [80, 443, [1000, 1200]] matches all requests on port 80, 443 and in the range 1000-1200.",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "type": "number"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "number"
+                            }
+                        ]
+                    },
+                    "type": "array"
+                },
+                "queryContains": {
+                    "description": "Optional. Matches if the query segment of the URL contains a specified string.",
+                    "type": "string"
+                },
+                "queryEquals": {
+                    "description": "Optional. Matches if the query segment of the URL is equal to a specified string.",
+                    "type": "string"
+                },
+                "queryPrefix": {
+                    "description": "Optional. Matches if the query segment of the URL starts with a specified string.",
+                    "type": "string"
+                },
+                "querySuffix": {
+                    "description": "Optional. Matches if the query segment of the URL ends with a specified string.",
+                    "type": "string"
+                },
+                "schemes": {
+                    "description": "Optional. Matches if the scheme of the URL is equal to any of the schemes specified in the array.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "urlContains": {
+                    "description": "Optional. Matches if the URL (without fragment identifier) contains a specified string. Port numbers are stripped from the URL if they match the default port number.",
+                    "type": "string"
+                },
+                "urlEquals": {
+                    "description": "Optional. Matches if the URL (without fragment identifier) is equal to a specified string. Port numbers are stripped from the URL if they match the default port number.",
+                    "type": "string"
+                },
+                "urlMatches": {
+                    "description": "Optional. Matches if the URL (without fragment identifier) matches a specified regular expression. Port numbers are stripped from the URL if they match the default port number. The regular expressions use the RE2 syntax.",
+                    "type": "string"
+                },
+                "urlPrefix": {
+                    "description": "Optional. Matches if the URL (without fragment identifier) starts with a specified string. Port numbers are stripped from the URL if they match the default port number.",
+                    "type": "string"
+                },
+                "urlSuffix": {
+                    "description": "Optional. Matches if the URL (without fragment identifier) ends with a specified string. Port numbers are stripped from the URL if they match the default port number.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "chrome.runtime.ManifestAction": {
+            "properties": {
+                "default_icon": {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^[0-9]+$": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "default_popup": {
+                    "type": "string"
+                },
+                "default_title": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "chrome.runtime.SearchProvider": {
+            "properties": {
+                "alternate_urls": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "encoding": {
+                    "type": "string"
+                },
+                "favicon_url": {
+                    "type": "string"
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "image_url_post_params": {
+                    "type": "string"
+                },
+                "instant_url": {
+                    "type": "string"
+                },
+                "instant_url_post_params": {
+                    "type": "string"
+                },
+                "is_default": {
+                    "type": "boolean"
+                },
+                "keyword": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "prepopulated_id": {
+                    "type": "number"
+                },
+                "search_url": {
+                    "type": "string"
+                },
+                "search_url_post_params": {
+                    "type": "string"
+                },
+                "suggest_url": {
+                    "type": "string"
+                },
+                "suggest_url_post_params": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "properties": {
+        "author": {
+            "type": "string"
+        },
+        "background": {
+            "properties": {
+                "page": {
+                    "type": "string"
+                },
+                "persistent": {
+                    "type": "boolean"
+                },
+                "scripts": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "background_page": {
+            "type": "string"
+        },
+        "browser_action": {
+            "$ref": "#/definitions/chrome.runtime.ManifestAction"
+        },
+        "chrome_settings_overrides": {
+            "properties": {
+                "homepage": {
+                    "type": "string"
+                },
+                "search_provider": {
+                    "$ref": "#/definitions/chrome.runtime.SearchProvider"
+                },
+                "startup_pages": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "chrome_ui_overrides": {
+            "properties": {
+                "bookmarks_ui": {
+                    "properties": {
+                        "remove_bookmark_shortcut": {
+                            "type": "boolean"
+                        },
+                        "remove_button": {
+                            "type": "boolean"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
+        "chrome_url_overrides": {
+            "properties": {
+                "bookmarks": {
+                    "type": "string"
+                },
+                "history": {
+                    "type": "string"
+                },
+                "newtab": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "commands": {
+            "additionalProperties": {
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "global": {
+                        "type": "boolean"
+                    },
+                    "suggested_key": {
+                        "properties": {
+                            "chromeos": {
+                                "type": "string"
+                            },
+                            "default": {
+                                "type": "string"
+                            },
+                            "linux": {
+                                "type": "string"
+                            },
+                            "mac": {
+                                "type": "string"
+                            },
+                            "windows": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "object"
+        },
+        "content_capabilities": {
+            "properties": {
+                "matches": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "permissions": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "content_scripts": {
+            "items": {
+                "properties": {
+                    "all_frames": {
+                        "type": "boolean"
+                    },
+                    "css": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "exclude_globs": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "exclude_matches": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "include_globs": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "js": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "match_about_blank": {
+                        "type": "boolean"
+                    },
+                    "matches": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "run_at": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "content_security_policy": {
+            "type": "string"
+        },
+        "converted_from_user_script": {
+            "type": "boolean"
+        },
+        "current_locale": {
+            "type": "string"
+        },
+        "default_locale": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "devtools_page": {
+            "type": "string"
+        },
+        "event_rules": {
+            "items": {
+                "properties": {
+                    "actions": {
+                        "items": {
+                            "properties": {
+                                "type": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array"
+                    },
+                    "conditions": {
+                        "items": {
+                            "$ref": "#/definitions/chrome.declarativeContent.PageStateMatcherProperties"
+                        },
+                        "type": "array"
+                    },
+                    "event": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "export": {
+            "properties": {
+                "whitelist": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "externally_connectable": {
+            "properties": {
+                "accepts_tls_channel_id": {
+                    "type": "boolean"
+                },
+                "ids": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "matches": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "file_browser_handlers": {
+            "items": {
+                "properties": {
+                    "default_title": {
+                        "type": "string"
+                    },
+                    "file_filters": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "id": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "file_system_provider_capabilities": {
+            "properties": {
+                "configurable": {
+                    "type": "boolean"
+                },
+                "multiple_mounts": {
+                    "type": "boolean"
+                },
+                "source": {
+                    "type": "string"
+                },
+                "watchable": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "homepage_url": {
+            "type": "string"
+        },
+        "icons": {
+            "additionalProperties": false,
+            "patternProperties": {
+                "^[0-9]+$": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "import": {
+            "items": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "minimum_version": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "incognito": {
+            "type": "string"
+        },
+        "input_components": {
+            "items": {
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "indicator": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "layouts": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "key": {
+            "type": "string"
+        },
+        "manifest_version": {
+            "enum": [
+                2
+            ],
+            "type": "number"
+        },
+        "minimum_chrome_version": {
+            "type": "string"
+        },
+        "nacl_modules": {
+            "items": {
+                "properties": {
+                    "mime_type": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "name": {
+            "type": "string"
+        },
+        "oauth2": {
+            "properties": {
+                "client_id": {
+                    "type": "string"
+                },
+                "scopes": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "offline_enabled": {
+            "type": "boolean"
+        },
+        "omnibox": {
+            "properties": {
+                "keyword": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "optional_permissions": {
+            "items": {
+                "type": "string"
+            },
+            "type": "array"
+        },
+        "options_page": {
+            "type": "string"
+        },
+        "options_ui": {
+            "properties": {
+                "chrome_style": {
+                    "type": "boolean"
+                },
+                "open_in_tab": {
+                    "type": "boolean"
+                },
+                "page": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "page_action": {
+            "$ref": "#/definitions/chrome.runtime.ManifestAction"
+        },
+        "permissions": {
+            "items": {
+                "type": "string"
+            },
+            "type": "array"
+        },
+        "platforms": {
+            "items": {
+                "properties": {
+                    "nacl_arch": {
+                        "type": "string"
+                    },
+                    "sub_package_path": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "plugins": {
+            "items": {
+                "properties": {
+                    "path": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "requirements": {
+            "properties": {
+                "3D": {
+                    "properties": {
+                        "features": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "type": "object"
+                },
+                "plugins": {
+                    "properties": {
+                        "npapi": {
+                            "type": "boolean"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
+        "sandbox": {
+            "properties": {
+                "content_security_policy": {
+                    "type": "string"
+                },
+                "pages": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "short_name": {
+            "type": "string"
+        },
+        "spellcheck": {
+            "properties": {
+                "dictionary_format": {
+                    "type": "string"
+                },
+                "dictionary_language": {
+                    "type": "string"
+                },
+                "dictionary_locale": {
+                    "type": "string"
+                },
+                "dictionary_path": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "storage": {
+            "properties": {
+                "managed_schema": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "tts_engine": {
+            "properties": {
+                "voices": {
+                    "items": {
+                        "properties": {
+                            "event_types": {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            "gender": {
+                                "type": "string"
+                            },
+                            "lang": {
+                                "type": "string"
+                            },
+                            "voice_name": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "update_url": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string"
+        },
+        "version_name": {
+            "type": "string"
+        },
+        "web_accessible_resources": {
+            "items": {
+                "type": "string"
+            },
+            "type": "array"
+        }
+    },
+    "type": "object"
+}
+
