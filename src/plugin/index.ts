@@ -3,7 +3,8 @@ import { promisify } from "util";
 import WebSocket from "ws";
 import webpack, { Compiler, Compilation, Stats } from "webpack";
 import Mustache from "mustache";
-import fs, { constants, readFileSync } from "fs";
+import { constants, readFileSync } from "fs";
+import { access } from "fs/promises";
 import vendors from "./vendors.json";
 import {
   Manifest,
@@ -11,9 +12,6 @@ import {
   transformManifestValuesFromENV,
   transformManifestVendorKeys,
 } from "./manifest";
-
-// TODO: Remove when we drop support for Node 12, See https://github.com/nodejs/node/issues/35740
-const { access } = fs.promises;
 
 const { WebpackError } = webpack;
 
