@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@tsconfig/node14": "^1.0.3",
-    "@types/firefox-webext-browser": "^109.0.0",
+    "@types/firefox-webext-browser": "^111.0.0",
     "@types/jest": "^29.4.0",
     "@types/mustache": "^4.2.2",
     "@types/webpack": "^5.28.0",
