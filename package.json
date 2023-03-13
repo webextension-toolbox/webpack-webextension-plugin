@@ -35,7 +35,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@types/chrome": "^0.0.213",
+    "@types/chrome": "^0.0.222",
 
     "@types/firefox-webext-browser": "^111.0.0",
     "ajv": "^6.12.6",
@@ -50,8 +50,8 @@
     "@types/webpack": "^5.28.0",
     "@types/webpack-sources": "^3.2.0",
     "@types/ws": "^8.5.4",
-    "@typescript-eslint/eslint-plugin": "^5.54.1",
-    "@typescript-eslint/parser": "^5.54.1",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
     "concurrently": "^7.6.0",
     "eslint": "^8.36.0",
     "eslint-config-airbnb-base": "^15.0.0",
