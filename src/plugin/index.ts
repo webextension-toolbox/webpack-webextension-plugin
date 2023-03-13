@@ -3,20 +3,17 @@ import { promisify } from "util";
 import WebSocket from "ws";
 import webpack, { Compiler, Compilation, Stats } from "webpack";
 import Mustache from "mustache";
-import Ajv from "ajv";
-import fs, { constants, readFileSync } from "fs";
+import { constants, readFileSync } from "fs";
+import { access } from "fs/promises";
 import vendors from "./vendors.json";
-import manifestSchema from "./manifest.schema.json";
-
-// TODO: Remove when we drop support for Node 12, See https://github.com/nodejs/node/issues/35740
-const { access } = fs.promises;
+import {
+  Manifest,
+  validateManifest,
+  transformManifestValuesFromENV,
+  transformManifestVendorKeys,
+} from "./manifest";
 
 const { WebpackError } = webpack;
-interface ManifestObject {
-  [key: string]: any;
-}
-
-type ManifestType = ManifestObject | string[] | string;
 
 interface Notification {
   action: string;
@@ -376,7 +373,7 @@ export default class WebextensionPlugin {
         this.manifestNameDefault
       );
       const manifestBuffer = await this.readFile(manifestPath);
-      let manifest: browser._manifest.WebExtensionManifest;
+      let manifest: Manifest;
       // Convert to JSON
       try {
         manifest = JSON.parse(manifestBuffer);
@@ -390,18 +387,16 @@ export default class WebextensionPlugin {
       };
 
       // Transform __chrome__key -> key
-      manifest = this.transformManifestVendorKeys(manifest, this.vendor);
+      manifest = transformManifestVendorKeys(manifest, this.vendor);
 
       // Transform ENV Values
-      manifest = this.transformManifestValuesFromENV(manifest);
+      manifest = transformManifestValuesFromENV(manifest);
 
       // Validate manifest.json syntax
       if (!this.skipManifestValidation) {
-        const ajv = new Ajv();
-        const validate = ajv.compile(manifestSchema);
-        const valid = validate(manifest);
-        if (!valid && validate.errors) {
-          validate.errors.forEach((error) => {
+        const errors = validateManifest(manifest);
+        if (errors !== null) {
+          errors.forEach((error) => {
             const webpackError = new WebpackError(
               `${error.dataPath} ${error.message}`
             );
@@ -458,114 +453,16 @@ export default class WebextensionPlugin {
   }
 
   /**
-   * Transform manifest keys
-   *
-   * @param manifest browser._manifest.WebExtensionManifest
-   * @param vendor string
-   * @returns browser._manifest.WebExtensionManifest
-   */
-  transformManifestVendorKeys(
-    manifest: browser._manifest.WebExtensionManifest,
-    vendor: string
-  ): browser._manifest.WebExtensionManifest {
-    const vendorRegExp = new RegExp(
-      `^__((?:(?:${vendors.join("|")})\\|?)+)__(.*)`
-    );
-
-    const transform = (manifestSection: ManifestType): ManifestType => {
-      if (Array.isArray(manifestSection)) {
-        return manifestSection.map((m) => transform(m));
-      }
-
-      if (typeof manifestSection === "object") {
-        return Object.entries(manifestSection).reduce(
-          (
-            previousValue: ManifestObject,
-            [key, value]: [key: string, value: ManifestType]
-          ) => {
-            const match = key.match(vendorRegExp);
-            if (match) {
-              const v = match[1].split("|");
-              // Swap key with non prefixed name
-              if (v.indexOf(vendor) > -1) {
-                previousValue[match[2]] = value;
-              }
-            } else {
-              previousValue[key] = transform(value);
-            }
-            return previousValue;
-          },
-          {}
-        );
-      }
-
-      return manifestSection;
-    };
-
-    return <browser._manifest.WebExtensionManifest>transform(manifest);
-  }
-
-  /**
-   * Transform Manifest Values from ENV
-   * @param manifest browser._manifest.WebExtensionManifest
-   * @returns browser._manifest.WebExtensionManifest
-   */
-  transformManifestValuesFromENV(
-    manifest: browser._manifest.WebExtensionManifest
-  ): browser._manifest.WebExtensionManifest {
-    const valueRegExp = /^__(?!MSG_)(.*)__$/;
-
-    const replace = (value: string): string => {
-      const match = value.match(valueRegExp);
-      if (match) {
-        return process.env[match[1]] ?? "";
-      }
-      return value;
-    };
-
-    const transform = (manifestSection: ManifestType): ManifestType => {
-      if (Array.isArray(manifestSection)) {
-        return manifestSection.map((m) => transform(m));
-      }
-
-      if (typeof manifestSection === "object") {
-        return Object.entries(manifestSection).reduce(
-          (
-            previousValue: ManifestObject,
-            [key, value]: [key: string, value: ManifestType]
-          ) => {
-            if (typeof value === "string") {
-              previousValue[key] = replace(value);
-            } else {
-              previousValue[key] = transform(value);
-            }
-            return previousValue;
-          },
-          {}
-        );
-      }
-
-      if (typeof manifestSection === "string") {
-        return replace(manifestSection);
-      }
-
-      return manifestSection;
-    };
-
-    return <browser._manifest.WebExtensionManifest>transform(manifest);
-  }
-
-  /**
    * Add Background Script to reload extension in dev mode
    *
-   * @param manifest browser._manifest.WebExtensionManifest
+   * @param manifest Manifest
    * @param compilation Compilation
-   * @returns Promise<browser._manifest.WebExtensionManifest>
+   * @returns Promise<Manifest>
    */
   async addBackgroundscript(
-    manifest: browser._manifest.WebExtensionManifest,
+    manifest: Manifest,
     compilation: Compilation
-  ): Promise<browser._manifest.WebExtensionManifest> {
+  ): Promise<Manifest> {
     if (!manifest.background) {
       manifest.background = undefined;
       return manifest;
@@ -584,7 +481,7 @@ export default class WebextensionPlugin {
 
     this.addClient(compilation);
 
-    if ("page" in manifest.background) {
+    if ("page" in manifest.background && manifest.background.page) {
       const { context } = compilation.options;
       if (!context) {
         // TODO: log this as an error
@@ -609,7 +506,7 @@ export default class WebextensionPlugin {
       return manifest;
     }
 
-    if ("scripts" in manifest.background) {
+    if ("scripts" in manifest.background && manifest.background.scripts) {
       // Insert Script
       manifest.background.scripts.push(this.backgroundPagePathDefault);
       return manifest;

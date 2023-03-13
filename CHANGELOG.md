@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Fixes #357 Schema for manifest validation is out of date
 ### Changed
 - Updated Dependencies
+- References both Mozilla and Chrome manifest schemas during validation
 ### Removed
 - Support for NodeJS 12.x
+### Added
+- Added tests for the manifest validations and transformations
 
 ## [2.1.3] - 2022-06-03
 
