@@ -11,7 +11,7 @@
                     "type": "array"
                 },
                 "isBookmarked": {
-                    "description": "Optional.\nSince Chrome 45. Warning: this is the current Beta channel. More information available on the API documentation pages.\nMatches if the bookmarked state of the page is equal to the specified value. Requres the bookmarks permission.",
+                    "description": "Optional.\nSince Chrome 45. Warning: this is the current Beta channel. More information available on the API documentation pages.\nMatches if the bookmarked state of the page is equal to the specified value. Requires the bookmarks permission.",
                     "type": "boolean"
                 },
                 "pageUrl": {
@@ -163,6 +163,8 @@
                 "desktopCapture",
                 "documentScan",
                 "downloads",
+                "downloads.shelf",
+                "downloads.ui",
                 "enterprise.deviceAttributes",
                 "enterprise.hardwarePlatform",
                 "enterprise.networkingAttributes",
@@ -182,6 +184,7 @@
                 "management",
                 "nativeMessaging",
                 "notifications",
+                "offscreen",
                 "pageCapture",
                 "platformKeys",
                 "power",
@@ -282,9 +285,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "enum": [
-                        "module"
-                    ],
+                    "const": "module",
                     "type": "string"
                 }
             },
@@ -647,9 +648,7 @@
             "type": "string"
         },
         "manifest_version": {
-            "enum": [
-                3
-            ],
+            "const": 3,
             "type": "number"
         },
         "minimum_chrome_version": {

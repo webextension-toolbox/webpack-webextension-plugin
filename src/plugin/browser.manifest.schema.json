@@ -639,9 +639,7 @@
             "properties": {
                 "events": {
                     "items": {
-                        "enum": [
-                            "startup"
-                        ],
+                        "const": "startup",
                         "type": "string"
                     },
                     "type": "array"

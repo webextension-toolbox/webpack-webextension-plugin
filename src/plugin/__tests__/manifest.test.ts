@@ -46,7 +46,9 @@ it("should fail if author is a boolean not a string", () => {
   const error = validateManifest(manifest);
 
   expect(error !== null).toBeTruthy();
-  expect(error[0].message).toBe("should be string");
+  if (error !== null) {
+    expect(error[0].message).toBe("should be string");
+  }
 });
 
 it("should allow split in incognito", () => {
