@@ -35,7 +35,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@types/chrome": "^0.0.237",
+    "@types/chrome": "^0.0.244",
 
     "@types/firefox-webext-browser": "^111.0.1",
     "ajv": "^6.12.6",
