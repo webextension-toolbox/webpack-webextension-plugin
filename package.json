@@ -43,7 +43,7 @@
     "ws": "^8.14.1"
   },
   "devDependencies": {
-    "@tsconfig/node14": "^14.1.0",
+    "@tsconfig/node18": "^18.2.2",
     "@types/jest": "^29.5.5",
     "@types/mustache": "^4.2.2",
     "@types/webpack": "^5.28.2",
@@ -66,6 +66,6 @@
     "webpack-cli": "^5.1.4"
   },
   "engines": {
-    "node": "^14.15.0 || >=16.0.0"
+    "node": ">=18.0.0"
   }
 }
