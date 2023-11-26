@@ -15,6 +15,7 @@
         "browser._manifest.ActionManifest": {
             "properties": {
                 "browser_style": {
+                    "description": "Deprecated in Manifest V3.",
                     "type": "boolean"
                 },
                 "default_area": {
@@ -63,6 +64,9 @@
             "properties": {
                 "gecko": {
                     "$ref": "#/definitions/browser._manifest.FirefoxSpecificProperties"
+                },
+                "gecko_android": {
+                    "$ref": "#/definitions/browser._manifest.GeckoAndroidSpecificProperties"
                 }
             },
             "type": "object"
@@ -128,6 +132,17 @@
             },
             "type": "object"
         },
+        "browser._manifest.DeprecatedApplications": {
+            "properties": {
+                "gecko": {
+                    "$ref": "#/definitions/browser._manifest.FirefoxSpecificProperties"
+                },
+                "gecko_android": {
+                    "$ref": "#/definitions/browser._manifest.GeckoAndroidSpecificProperties"
+                }
+            },
+            "type": "object"
+        },
         "browser._manifest.FirefoxSpecificProperties": {
             "properties": {
                 "id": {
@@ -140,6 +155,17 @@
                     "type": "string"
                 },
                 "update_url": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "browser._manifest.GeckoAndroidSpecificProperties": {
+            "properties": {
+                "strict_max_version": {
+                    "type": "string"
+                },
+                "strict_min_version": {
                     "type": "string"
                 }
             },
@@ -214,7 +240,7 @@
                     "description": "Needs at least manifest version 3."
                 },
                 "applications": {
-                    "$ref": "#/definitions/browser._manifest.BrowserSpecificSettings",
+                    "$ref": "#/definitions/browser._manifest.DeprecatedApplications",
                     "description": "The applications property is deprecated, please use 'browser_specific_settings'\nNot supported on manifest versions above 2."
                 },
                 "author": {
@@ -245,6 +271,13 @@
                                         "type": "string"
                                     },
                                     "type": "array"
+                                },
+                                "type": {
+                                    "enum": [
+                                        "classic",
+                                        "module"
+                                    ],
+                                    "type": "string"
                                 }
                             },
                             "type": "object"
@@ -301,8 +334,7 @@
                     ]
                 },
                 "declarative_net_request": {
-                    "$ref": "#/definitions/browser._manifest._WebExtensionManifestDeclarativeNetRequest",
-                    "description": "Needs at least manifest version 3."
+                    "$ref": "#/definitions/browser._manifest._WebExtensionManifestDeclarativeNetRequest"
                 },
                 "default_locale": {
                     "type": "string"
@@ -651,7 +683,6 @@
             "type": "object"
         },
         "browser._manifest._WebExtensionManifestDeclarativeNetRequest": {
-            "description": "Needs at least manifest version 3.",
             "properties": {
                 "rule_resources": {
                     "items": {
@@ -701,9 +732,11 @@
         "browser._manifest._WebExtensionManifestOptionsUi": {
             "properties": {
                 "browser_style": {
+                    "description": "Defaults to true in Manifest V2; Deprecated in Manifest V3.",
                     "type": "boolean"
                 },
                 "chrome_style": {
+                    "description": "chrome_style is ignored in Firefox. Its replacement (browser_style) has been deprecated.\nNot supported on manifest versions above 2.",
                     "type": "boolean"
                 },
                 "open_in_tab": {
@@ -718,6 +751,7 @@
         "browser._manifest._WebExtensionManifestPageAction": {
             "properties": {
                 "browser_style": {
+                    "description": "Deprecated in Manifest V3.",
                     "type": "boolean"
                 },
                 "default_icon": {
@@ -763,6 +797,7 @@
         "browser._manifest._WebExtensionManifestSidebarAction": {
             "properties": {
                 "browser_style": {
+                    "description": "Defaults to true in Manifest V2; Deprecated in Manifest V3.",
                     "type": "boolean"
                 },
                 "default_icon": {
@@ -1092,6 +1127,7 @@
                 "declarativeContent",
                 "declarativeNetRequest",
                 "declarativeNetRequestFeedback",
+                "declarativeNetRequestWithHostAccess",
                 "declarativeWebRequest",
                 "desktopCapture",
                 "documentScan",
@@ -1130,6 +1166,7 @@
                 "scripting",
                 "search",
                 "sessions",
+                "sidePanel",
                 "signedInDevices",
                 "storage",
                 "system.cpu",
@@ -1903,6 +1940,13 @@
                                 "type": "array"
                             },
                             "run_at": {
+                                "type": "string"
+                            },
+                            "world": {
+                                "enum": [
+                                    "ISOLATED",
+                                    "MAIN"
+                                ],
                                 "type": "string"
                             }
                         },

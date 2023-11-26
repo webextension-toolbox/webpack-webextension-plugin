@@ -159,6 +159,7 @@
                 "declarativeContent",
                 "declarativeNetRequest",
                 "declarativeNetRequestFeedback",
+                "declarativeNetRequestWithHostAccess",
                 "declarativeWebRequest",
                 "desktopCapture",
                 "documentScan",
@@ -197,6 +198,7 @@
                 "scripting",
                 "search",
                 "sessions",
+                "sidePanel",
                 "signedInDevices",
                 "storage",
                 "system.cpu",
@@ -438,6 +440,13 @@
                         "type": "array"
                     },
                     "run_at": {
+                        "type": "string"
+                    },
+                    "world": {
+                        "enum": [
+                            "ISOLATED",
+                            "MAIN"
+                        ],
                         "type": "string"
                     }
                 },
