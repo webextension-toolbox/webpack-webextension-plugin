@@ -25,7 +25,7 @@ $ npm i @webextension-toolbox/webextension-toolbox
 ## Usage
 
 ```js
-const WebextensionPlugin = require("webpack-webextension-plugin");
+import WebextensionPlugin from "@webextension-toolbox/webpack-webextension-plugin";
 
 const config = {
   plugins: [
