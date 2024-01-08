@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.3.1] - 2024-01-07
+
+### Changed
+
+- Added non default export for esm imports
+
+### Changed
+
+- Updated Readme
+
 ## [3.2.1] - 2023-10-28
 
 ### Changed
