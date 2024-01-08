@@ -31,7 +31,7 @@ export interface WebextensionPluginOptions {
   skipManifestValidation?: boolean;
 }
 
-export default class WebextensionPlugin {
+class WebextensionPlugin {
   port: number;
 
   host: string;
@@ -548,3 +548,6 @@ export default class WebextensionPlugin {
     return path.join(dir, `${name}.js`);
   }
 }
+
+export { WebextensionPlugin };
+export default WebextensionPlugin;
