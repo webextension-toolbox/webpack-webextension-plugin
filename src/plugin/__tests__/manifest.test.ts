@@ -35,7 +35,7 @@ it("should validate a simple v2 manifest", () => {
   expect(validateManifest(manifest)).toBeNull();
 });
 
-it("should fail if author is a boolean not a string", () => {
+it("should fail if author is a boolean not an object", () => {
   const manifest: any = {
     name: "name",
     version: "0.0.1",
@@ -47,7 +47,7 @@ it("should fail if author is a boolean not a string", () => {
 
   expect(error !== null).toBeTruthy();
   if (error !== null) {
-    expect(error[0].message).toBe("should be string");
+    expect(error[0].message).toBe("should be object");
   }
 });
 

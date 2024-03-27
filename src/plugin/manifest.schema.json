@@ -979,7 +979,7 @@
                     "type": "array"
                 },
                 "isBookmarked": {
-                    "description": "Optional.\nSince Chrome 45. Warning: this is the current Beta channel. More information available on the API documentation pages.\nMatches if the bookmarked state of the page is equal to the specified value. Requires the bookmarks permission.",
+                    "description": "Optional.",
                     "type": "boolean"
                 },
                 "pageUrl": {
@@ -1180,6 +1180,7 @@
                 "tts",
                 "ttsEngine",
                 "unlimitedStorage",
+                "userScripts",
                 "vpnProvider",
                 "wallpaper",
                 "webNavigation",
@@ -1191,7 +1192,12 @@
         "chrome.runtime.ManifestV2": {
             "properties": {
                 "author": {
-                    "type": "string"
+                    "properties": {
+                        "email": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
                 },
                 "background": {
                     "properties": {
@@ -1779,7 +1785,12 @@
                     "$ref": "#/definitions/chrome.runtime.ManifestAction"
                 },
                 "author": {
-                    "type": "string"
+                    "properties": {
+                        "email": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
                 },
                 "background": {
                     "properties": {
@@ -2204,6 +2215,12 @@
                         }
                     },
                     "type": "object"
+                },
+                "optional_host_permissions": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
                 },
                 "optional_permissions": {
                     "items": {

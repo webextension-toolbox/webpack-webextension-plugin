@@ -173,6 +173,6 @@ Would be replaced with the value of `process.env.MY_ENV_VARIABLE`
 
 ## License
 
-Copyright 2018-2022 Henrik Wenz
+Copyright 2018-2024 Henrik Wenz
 
 This project is free software released under the MIT license.

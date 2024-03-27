@@ -11,7 +11,7 @@
                     "type": "array"
                 },
                 "isBookmarked": {
-                    "description": "Optional.\nSince Chrome 45. Warning: this is the current Beta channel. More information available on the API documentation pages.\nMatches if the bookmarked state of the page is equal to the specified value. Requires the bookmarks permission.",
+                    "description": "Optional.",
                     "type": "boolean"
                 },
                 "pageUrl": {
@@ -198,7 +198,12 @@
     },
     "properties": {
         "author": {
-            "type": "string"
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
         },
         "background": {
             "properties": {
