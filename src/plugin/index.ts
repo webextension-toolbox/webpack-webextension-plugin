@@ -5,6 +5,7 @@ import webpack, { Compiler, Compilation, Stats } from "webpack";
 import Mustache from "mustache";
 import { constants, readFileSync } from "fs";
 import { access } from "fs/promises";
+import { stripComments } from "jsonc-parser";
 import vendors from "./vendors.json";
 import {
   Manifest,
@@ -12,7 +13,6 @@ import {
   transformManifestValuesFromENV,
   transformManifestVendorKeys,
 } from "./manifest";
-import { stripComments } from "jsonc-parser";
 
 const { WebpackError } = webpack;
 
