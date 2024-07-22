@@ -12,6 +12,7 @@ import {
   transformManifestValuesFromENV,
   transformManifestVendorKeys,
 } from "./manifest";
+import { stripComments } from "jsonc-parser";
 
 const { WebpackError } = webpack;
 
@@ -164,7 +165,7 @@ class WebextensionPlugin {
     const manifestBuffer = readFileSync(manifestPath, {
       encoding: "utf8",
     });
-    const manifest = JSON.parse(manifestBuffer);
+    const manifest = JSON.parse(stripComments(manifestBuffer));
     const serviceWorker = manifest?.background?.service_worker ?? null;
 
     if (
@@ -374,11 +375,13 @@ class WebextensionPlugin {
         compilation.options.context,
         this.manifestNameDefault
       );
-      const manifestBuffer = await this.readFile(manifestPath);
+      const manifestBuffer = readFileSync(manifestPath, {
+        encoding: "utf8",
+      });
       let manifest: Manifest;
       // Convert to JSON
       try {
-        manifest = JSON.parse(manifestBuffer);
+        manifest = JSON.parse(stripComments(manifestBuffer));
       } catch (error) {
         throw new Error(`Could not parse ${this.manifestNameDefault}`);
       }
