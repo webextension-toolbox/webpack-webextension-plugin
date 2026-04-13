@@ -6,5 +6,5 @@
     "types": ["node", "chrome", "firefox-webext-browser", "jest"]
   },
   "include": ["**/*.ts"],
-  "extends": "@tsconfig/node18/tsconfig.json"
+  "extends": "@tsconfig/node20/tsconfig.json"
 }
