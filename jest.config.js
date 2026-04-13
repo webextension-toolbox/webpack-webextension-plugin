@@ -8,6 +8,7 @@ module.exports = {
         tsconfig: {
           resolveJsonModule: true,
           esModuleInterop: true,
+          types: ["node", "jest", "chrome", "firefox-webext-browser"],
         },
       },
     ],

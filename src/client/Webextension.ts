@@ -113,7 +113,7 @@ export default class Webextension {
     // Reload other extension views
     this.browser.extension
       .getViews()
-      .map((_window) => _window.location.reload());
+      .map((_window: Window) => _window.location.reload());
   }
 
   /**
@@ -122,7 +122,7 @@ export default class Webextension {
    * of the fs function
    */
   debounce(fn: Function, timeout = 300) {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
     return (...args: any) => {
       clearTimeout(timer);
       timer = setTimeout(() => {
@@ -140,13 +140,15 @@ export default class Webextension {
       this.log("Connected");
     };
     connection.onmessage = (event) => {
-      let payload: Notification;
+      let payload: Notification | undefined;
       try {
         payload = JSON.parse(event.data);
       } catch (error) {
         this.log("Could not parse server payload");
       }
-      this.handleServerMessage(payload);
+      if (payload) {
+        this.handleServerMessage(payload);
+      }
     };
     connection.onerror = () => {
       this.log("Connection error.");

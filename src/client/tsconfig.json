@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es2015.promise", "dom", "es2015"],
+    "lib": ["es2016", "dom"],
     "target": "es5",
+    "ignoreDeprecations": "6.0",
+    "strict": false,
     "outDir": "../../dist",
     "module": "commonjs",
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "types": ["chrome", "firefox-webext-browser"]
   },
   "include": ["**/*.ts"]
 }

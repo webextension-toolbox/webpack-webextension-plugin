@@ -2,7 +2,8 @@
   "compilerOptions": {
     "outDir": "../../dist",
     "resolveJsonModule": true,
-    "declaration": true
+    "declaration": true,
+    "types": ["node", "chrome", "firefox-webext-browser", "jest"]
   },
   "include": ["**/*.ts"],
   "extends": "@tsconfig/node18/tsconfig.json"
