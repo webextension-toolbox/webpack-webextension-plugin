@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.0] - 2026-04-13
+
+### Changed
+
+- Document usage on importing WebextensionPlugin by @vwheezy in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/626
+- Bump the actions group with 3 updates by @dependabot[bot] in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/648
+- Bump the production-dependencies group with 2 updates by @dependabot[bot] in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/649
+- Allow javascript style comments in manifest.json by @alexzurbonsen in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/677
+- Bump the development-dependencies group across 1 directory with 13 updates by @dependabot[bot] in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/771
+- Bump the production-dependencies group across 1 directory with 5 updates by @dependabot[bot] in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/774
+- Bump the development-dependencies group across 1 directory with 7 updates by @dependabot[bot] in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/773
+- Bump the production-dependencies group across 1 directory with 3 updates by @dependabot[bot] in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/781
+- Bump the development-dependencies group across 1 directory with 10 updates by @dependabot[bot] in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/780
+- Bump actions/checkout from 4 to 5 in the actions group by @dependabot[bot] in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/788
+- Bump js-yaml from 3.14.1 to 3.14.2 by @dependabot[bot] in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/796
+- Bump the actions group across 1 directory with 4 updates by @dependabot[bot] in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/805
+
+## New Contributors
+- @vwheezy made their first contribution in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/626
+- @alexzurbonsen made their first contribution in https://github.com/webextension-toolbox/webpack-webextension-plugin/pull/677
+
 ## [3.3.1] - 2024-01-07
 
 ### Changed
