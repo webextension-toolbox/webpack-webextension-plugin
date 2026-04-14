@@ -113,7 +113,7 @@ export default class Webextension {
     // Reload other extension views
     this.browser.extension
       .getViews()
-      .map((_window: Window) => _window.location.reload());
+      .forEach((_window: Window) => _window.location.reload());
   }
 
   /**
