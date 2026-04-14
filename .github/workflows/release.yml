@@ -10,8 +10,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: "18"
       - run: npm ci
@@ -22,8 +22,8 @@ jobs:
     needs: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: "18"
       - run: npm ci
@@ -36,7 +36,7 @@ jobs:
         uses: mindsers/changelog-reader-action@v2
         with:
           version: ${{ steps.get_version.outputs.version }}
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         with:
           body: ${{ steps.changelog_reader.outputs.changes }}
           tag_name: ${{ steps.get_version.outputs.version }}
