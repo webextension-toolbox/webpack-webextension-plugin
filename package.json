@@ -35,8 +35,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@types/chrome": "^0.0.328",
-    "@types/firefox-webext-browser": "^120.0.3",
+    "@types/chrome": "^0.2.5",
+    "@types/firefox-webext-browser": "^143.0.0",
     "ajv": "^6.12.6",
     "jsonc-parser": "^3.3.1",
     "mustache": "^4.2.0",
